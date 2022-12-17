@@ -29,7 +29,7 @@ export default function Header() {
           <div
             className={
               isNavOpen
-                ? 'flex flex-col block absolute w-100 h-screen top-0 left-0 bg-white z-10 justify-evenly items-center'
+                ? 'flex flex-col block absolute w-screen h-screen top-0 left-0 bg-white z-10 justify-evenly items-center'
                 : 'hidden'
             }
           >
