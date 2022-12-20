@@ -3,10 +3,10 @@ import Header from './Header';
 
 export default function Layout(props: any) {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex h-screen flex-col">
       <Header />
 
-      <main className="flex-grow p-3">{props.children}</main>
+      <main className="flex-grow px-3 py-10">{props.children}</main>
 
       <Footer />
     </div>

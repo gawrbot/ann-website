@@ -9,9 +9,11 @@ export type Post = {
   html: string;
 };
 
-type Props = {
-  posts: Post[];
-};
+type Props =
+  | {
+      posts: Post[];
+    }
+  | { error: string };
 
 async function getPosts() {
   const res = await fetch(
@@ -23,15 +25,46 @@ async function getPosts() {
   return posts;
 }
 
+// async function getTags() {
+//   const res = await fetch(
+//     `${BLOG_URL}/ghost/api/v3/content/tags/?key=${CONTENT_API_KEY}`,
+//   ).then((resp) => resp.json());
+
+//   const tags = res.tags;
+
+//   return tags;
+// }
+
 export const getStaticProps = async () => {
   const posts = await getPosts();
+  if (typeof posts === 'undefined') {
+    return {
+      props: {
+        error: 'Nothing to see here',
+      },
+    };
+  }
   return {
-    revalidate: 10,
+    revalidate: 300,
     props: { posts },
   };
 };
 
 export default function Home(props: Props) {
+  if ('error' in props) {
+    return (
+      <>
+        <p>
+          <Link href="/">
+            <span className="underline">Go back</span>
+          </Link>
+        </p>
+        <h1>Something went wrong 👀</h1>
+        <p>{props.error}</p>
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -40,17 +73,19 @@ export default function Home(props: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex">
-        {props.posts.map((post) => {
-          return (
-            <div key={post.slug}>
-              <Link href="/text/[slug]" as={`/text/${post.slug}`}>
-                <h2 className="font-bold">{post.title}</h2>
-              </Link>
-              <div dangerouslySetInnerHTML={{ __html: post.html }} />
-            </div>
-          );
-        })}
+      <div className="grid justify-items-center">
+        <div className="grid grid-cols-1 gap-x-32 gap-y-16 lg:grid-cols-3 ">
+          {props.posts.reverse().map((post) => {
+            return (
+              <div key={post.slug}>
+                <Link href="/text/[slug]" as={`/text/${post.slug}`}>
+                  <h2 className="font-bold">{post.title}</h2>
+                </Link>
+                <div dangerouslySetInnerHTML={{ __html: post.html }} />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );
