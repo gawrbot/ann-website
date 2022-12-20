@@ -6,6 +6,7 @@ const { BLOG_URL, CONTENT_API_KEY } = process.env;
 export type Post = {
   title: string;
   slug: string;
+  html: string;
 };
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
 
 async function getPosts() {
   const res = await fetch(
-    `${BLOG_URL}/ghost/api/v3/content/posts/?key=${CONTENT_API_KEY}&fields=title,slug`,
+    `${BLOG_URL}/ghost/api/v3/content/posts/?key=${CONTENT_API_KEY}&fields=title,slug,html`,
   ).then((resp) => resp.json());
 
   const posts = res.posts;
@@ -22,7 +23,7 @@ async function getPosts() {
   return posts;
 }
 
-export const getStaticProps = async ({ params }: any) => {
+export const getStaticProps = async () => {
   const posts = await getPosts();
   return {
     revalidate: 10,
@@ -39,17 +40,18 @@ export default function Home(props: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ul>
+      <div className="flex">
         {props.posts.map((post) => {
           return (
-            <li key={post.slug}>
-              <Link href="/post/[slug]" as={`/post/${post.slug}`}>
-                {post.title}
+            <div key={post.slug}>
+              <Link href="/text/[slug]" as={`/text/${post.slug}`}>
+                <h2 className="font-bold">{post.title}</h2>
               </Link>
-            </li>
+              <div dangerouslySetInnerHTML={{ __html: post.html }} />
+            </div>
           );
         })}
-      </ul>
+      </div>
     </>
   );
 }
