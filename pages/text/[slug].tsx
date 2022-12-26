@@ -65,13 +65,13 @@ export default function Text(props: Props) {
   }
 
   return (
-    <div>
-      <p>
+    <div className="lg:mx-40">
+      <p className="lg:mb-8">
         <Link href="/">
           <span className="underline">Go back</span>
         </Link>
       </p>
-      <h1>{props.post.title}</h1>
+      <h1 className="mb-2 text-lg font-bold">{props.post.title}</h1>
       <div dangerouslySetInnerHTML={{ __html: props.post.html }} />
     </div>
   );
