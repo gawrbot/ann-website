@@ -1,24 +1,18 @@
-# Set the OS with Node.js
+# Initialize builder layer
 FROM node:18-alpine AS builder
+ENV NODE_ENV production
 # Install necessary tools
-RUN apk add --no-cache libc6-compat yq --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-# Create a directory called app
+RUN apk add --no-cache libc6-compat yq --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community
 WORKDIR /app
 # Copy the content of the project to the machine
 COPY . .
-# Set an environmental variable
-ENV NODE_ENV production
-ENV FLY_IO true
-
 RUN yq --inplace --output-format=json '.dependencies = .dependencies * (.devDependencies | to_entries | map(select(.key | test("^(typescript|@types/*|@upleveled/)"))) | from_entries)' package.json
 RUN yarn install --frozen-lockfile
 RUN yarn build
 
-# Initialize production layer
+# Initialize runner layer
 FROM node:18-alpine AS runner
-# Install necessary tools
 ENV NODE_ENV production
-WORKDIR /app
 
 # Copy built app
 COPY --from=builder /app/.next ./.next
@@ -27,11 +21,6 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./
+COPY --from=builder /app/.env.production ./
 
-# Copy start script and make it executable
-COPY --from=builder /app/scripts ./scripts
-RUN chmod +x /app/scripts/fly-io-start.sh
-
-ENV NODE_ENV production
-ENV FLY_IO true
-ENV PORT 8080
+CMD ["yarn", "start"]

@@ -1,4 +1,4 @@
-# fly.toml file generated for n-co on 2022-12-28T13:24:17+01:00
+# fly.toml file generated for n-co on 2022-12-28T17:28:46+01:00
 
 app = "n-co"
 kill_signal = "SIGINT"

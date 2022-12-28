@@ -1,8 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
-const { BLOG_URL, CONTENT_API_KEY } = process.env;
-
 export type Post = {
   title: string;
   slug: string;
@@ -18,7 +16,7 @@ type Props =
 
 async function getPosts() {
   const res = await fetch(
-    `${BLOG_URL}/ghost/api/v3/content/posts/?key=${CONTENT_API_KEY}&fields=title,slug,html&include=tags`,
+    `${process.env.BLOG_URL}/ghost/api/v3/content/posts/?key=${process.env.CONTENT_API_KEY}&fields=title,slug,html&include=tags`,
   ).then((resp) => resp.json());
 
   const posts = res.posts;
@@ -65,8 +63,6 @@ export default function Home(props: Props) {
         : -1
       : -1,
   );
-
-  console.log(sortedPosts);
 
   return (
     <>
