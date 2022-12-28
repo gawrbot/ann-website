@@ -36,7 +36,7 @@ export const getStaticProps = async () => {
     };
   }
   return {
-    revalidate: 300,
+    revalidate: 10,
     props: { posts },
   };
 };
@@ -56,18 +56,15 @@ export default function Home(props: Props) {
     );
   }
 
-  const sortedPosts = props.posts.sort((a) => {
-    if (a.tags[0].name === 'de') {
-      return 0;
-    }
-    if (a.tags[0].name === 'en') {
-      return 1;
-    }
-    return -1;
-  });
-  // .sort((a, b) => {
-  //   return Number(b.tags[1].name) - Number(a.tags[1].name);
-  // });
+  const sortedPosts = props.posts.sort((a, b) =>
+    a.tags[1].name > b.tags[1].name
+      ? 1
+      : a.tags[1].name === b.tags[1].name
+      ? a.tags[0].name > b.tags[0].name
+        ? 1
+        : -1
+      : -1,
+  );
 
   console.log(sortedPosts);
 
@@ -85,19 +82,19 @@ export default function Home(props: Props) {
             return (
               <div
                 key={post.slug}
-                className={`${
+                className={
                   post.tags[0].name === 'de'
                     ? 'col-start-1'
                     : post.tags[0].name === 'en'
                     ? 'col-start-2'
                     : 'col-start-3'
-                }`}
+                }
               >
                 <Link href="/text/[slug]" as={`/text/${post.slug}`}>
                   <h2 className="font-bold">{post.title}</h2>
                 </Link>
-                <p>{post.tags[0].name}</p>
-                <p>{post.tags[1].name}</p>
+                {/* <p>{post.tags[0].name}</p>
+                <p>{post.tags[1].name}</p> */}
                 <div dangerouslySetInnerHTML={{ __html: post.html }} />
               </div>
             );
