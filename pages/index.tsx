@@ -80,10 +80,10 @@ export default function Home(props: Props) {
                 key={post.slug}
                 className={
                   post.tags[0].name === 'de'
-                    ? 'col-start-1'
+                    ? 'lg:col-start-1'
                     : post.tags[0].name === 'en'
-                    ? 'col-start-2'
-                    : 'col-start-3'
+                    ? 'lg:col-start-2'
+                    : 'lg:col-start-3'
                 }
               >
                 <Link href="/text/[slug]" as={`/text/${post.slug}`}>

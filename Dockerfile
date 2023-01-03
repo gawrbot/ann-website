@@ -7,6 +7,10 @@ WORKDIR /app
 # Copy the content of the project to the machine
 COPY . .
 RUN yq --inplace --output-format=json '.dependencies = .dependencies * (.devDependencies | to_entries | map(select(.key | test("^(typescript|@types/*|@upleveled/)"))) | from_entries)' package.json
+RUN --mount=type=secret,id=BLOG_URL \
+    BLOG_URL="$(cat /run/secrets/BLOG_URL)"
+RUN --mount=type=secret,id=CONTENT_API_KEY \
+    CONTENT_API_KEY="$(cat /run/secrets/CONTENT_API_KEY)"
 RUN yarn install --frozen-lockfile
 RUN yarn build
 
