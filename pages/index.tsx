@@ -16,7 +16,7 @@ type Props =
 
 async function getPosts() {
   const res = await fetch(
-    `${process.env.BLOG_URL}/ghost/api/v3/content/posts/?key=${process.env.CONTENT_API_KEY}&fields=title,slug,html&include=tags`,
+    `${process.env.blog_url}/ghost/api/v3/content/posts/?key=${process.env.content_api_key}&fields=title,slug,html&include=tags`,
   ).then((resp) => resp.json());
 
   const posts = res.posts;
