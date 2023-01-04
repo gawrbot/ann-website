@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Post } from '../';
 
-const { BLOG_URL, CONTENT_API_KEY } = process.env;
 type Props =
   | {
       post: Post;
@@ -12,7 +11,7 @@ type Props =
 
 async function getPost(slug: string) {
   const res = await fetch(
-    `${BLOG_URL}/ghost/api/v3/content/posts/slug/${slug}?key=${CONTENT_API_KEY}&fields=title,slug,html`,
+    `${process.env.blog_url}/ghost/api/v3/content/posts/slug/${slug}?key=${process.env.content_api_key}&fields=title,slug,html`,
   ).then((resp) => resp.json());
 
   const posts = res.posts;
@@ -51,7 +50,7 @@ export default function Text(props: Props) {
       <>
         <p>
           <Link href="/">
-            <span className="underline">Go back</span>
+            <span className="underline">Go Home</span>
           </Link>
         </p>
         <h1>Something went wrong 👀</h1>
@@ -68,7 +67,7 @@ export default function Text(props: Props) {
     <div className="lg:mx-40">
       <p className="lg:mb-8">
         <Link href="/">
-          <span className="underline">Go back</span>
+          <span className="underline">Go Home</span>
         </Link>
       </p>
       <h1 className="mb-2 text-lg font-bold">{props.post.title}</h1>

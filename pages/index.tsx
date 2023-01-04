@@ -1,6 +1,9 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
+
+const dev = process.env.NODE_ENV !== 'production';
+
+export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
 
 export type Post = {
   title: string;
@@ -84,37 +87,44 @@ export default function Home(props: Props) {
               >
                 {postGroup.map((post) => {
                   return (
-                    <div
+                    <Link
+                      href={`${server}/text/${post.slug}`}
                       key={post.slug}
                       className={
                         post.tags[0].name === 'de'
-                          ? 'lg:col-start-1 '
+                          ? 'lg:col-start-1'
                           : post.tags[0].name === 'en'
                           ? 'lg:col-start-2'
                           : 'lg:col-start-3'
                       }
-                      lang={
-                        post.tags[0].name === 'de'
-                          ? 'de'
-                          : post.tags[0].name === 'en'
-                          ? 'en'
-                          : 'ja'
-                      }
                     >
-                      {post.feature_image ? (
-                        <img
-                          alt={`Illustration for the text ${post.title}`}
-                          src={post.feature_image}
-                        />
-                      ) : null}
-                      {post.feature_image_caption ? (
-                        <p className="text-xs">{post.feature_image_caption}</p>
-                      ) : null}
-                      <Link href="/text/[slug]" as={`/text/${post.slug}`}>
-                        <h2 className="mt-4 font-bold ">{post.title}</h2>
-                      </Link>
-                      <div dangerouslySetInnerHTML={{ __html: post.html }} />
-                    </div>
+                      <div
+                        lang={
+                          post.tags[0].name === 'de'
+                            ? 'de'
+                            : post.tags[0].name === 'en'
+                            ? 'en'
+                            : 'ja'
+                        }
+                        className="border border-black bg-red-200 p-2 hover:shadow-xl"
+                      >
+                        {post.feature_image ? (
+                          <img
+                            alt={`Illustration for the text ${post.title}`}
+                            src={post.feature_image}
+                          />
+                        ) : null}
+                        {post.feature_image_caption ? (
+                          <p className="text-xs">
+                            {post.feature_image_caption}
+                          </p>
+                        ) : null}
+
+                        <h2 className="mb-2 font-bold">{post.title}</h2>
+
+                        <div dangerouslySetInnerHTML={{ __html: post.html }} />
+                      </div>
+                    </Link>
                   );
                 })}
               </div>
