@@ -20,7 +20,7 @@ type Props =
     }
   | { error: string };
 
-async function getPosts() {
+export async function getPosts() {
   const res = await fetch(
     `${process.env.blog_url}/ghost/api/v3/content/posts/?key=${process.env.content_api_key}&fields=title,slug,html,feature_image,feature_image_caption&include=tags`,
   ).then((resp) => resp.json());
@@ -82,7 +82,7 @@ export default function Home(props: Props) {
             );
             return (
               <div
-                className="grid grid-cols-1 gap-x-16 lg:grid-cols-3 "
+                className="grid grid-cols-3 gap-x-5 lg:gap-x-16 "
                 key={postGroup[0]?.tags[1]?.name}
               >
                 {postGroup.map((post) => {
@@ -92,10 +92,10 @@ export default function Home(props: Props) {
                       key={post.slug}
                       className={
                         post.tags[0].name === 'de'
-                          ? 'lg:col-start-1'
+                          ? 'col-start-1'
                           : post.tags[0].name === 'en'
-                          ? 'lg:col-start-2'
-                          : 'lg:col-start-3'
+                          ? 'col-start-2'
+                          : 'col-start-3'
                       }
                     >
                       <div
@@ -106,7 +106,7 @@ export default function Home(props: Props) {
                             ? 'en'
                             : 'ja'
                         }
-                        className="border border-black bg-red-200 p-2 hover:shadow-xl"
+                        className="border border-black p-2 hover:shadow-xl"
                       >
                         {post.feature_image ? (
                           <img
@@ -122,7 +122,10 @@ export default function Home(props: Props) {
 
                         <h2 className="mb-2 font-bold">{post.title}</h2>
 
-                        <div dangerouslySetInnerHTML={{ __html: post.html }} />
+                        <div
+                          dangerouslySetInnerHTML={{ __html: post.html }}
+                          className="break-words"
+                        />
                       </div>
                     </Link>
                   );

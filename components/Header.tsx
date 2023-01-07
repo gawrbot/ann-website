@@ -56,8 +56,7 @@ export default function Header() {
                 <Anchor href="/browse">Browse</Anchor>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                {/* Search bar with full text search */}
-                Search
+                <Anchor href="/search">Search</Anchor>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
                 <Anchor href="/impressum">Impressum</Anchor>
