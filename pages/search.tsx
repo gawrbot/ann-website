@@ -56,6 +56,7 @@ export default function Search(props: Props) {
       </>
     );
   } else {
+    // Überlegen, wie nicht konditionell abrufen möglich
     const { results, searchValue, setSearchValue } = useSearch<any>({
       dataSet: props.posts,
       keys: ['title', 'html'],
