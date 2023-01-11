@@ -20,7 +20,7 @@ async function getPost(slug: string) {
 }
 
 // Ghost CMS Request
-export const getStaticProps: GetStaticProps = async ({ params }: any) => {
+export const getServerSideProps: GetStaticProps = async ({ params }: any) => {
   const post = await getPost(params.slug);
   if (typeof post === 'undefined') {
     return {
@@ -31,16 +31,16 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   }
   return {
     props: { post },
-    revalidate: 300,
+    // revalidate: 300,
   };
 };
 
-export const getStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: true,
-  };
-};
+// export const getStaticPaths = () => {
+//   return {
+//     paths: [],
+//     fallback: true,
+//   };
+// };
 
 export default function Text(props: Props) {
   const router = useRouter();

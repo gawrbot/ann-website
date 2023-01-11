@@ -24,7 +24,7 @@ async function getPosts() {
   return posts;
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const posts = await getPosts();
   if (typeof posts === 'undefined') {
     return {
@@ -34,7 +34,6 @@ export const getStaticProps = async () => {
     };
   }
   return {
-    revalidate: 10,
     props: { posts },
   };
 };
