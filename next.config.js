@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    blog_url: process.env.blog_url,
-    content_api_key: process.env.content_api_key,
+    BLOG_URL: process.env.BLOG_URL,
+    CONTENT_API_KEY: process.env.CONTENT_API_KEY,
   },
   eslint: {
     ignoreDuringBuilds: true,

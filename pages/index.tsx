@@ -1,5 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useContext, useEffect } from 'react';
+import { scrollContext } from '../components/ScrollContext';
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -9,20 +11,18 @@ export type Post = {
   title: string;
   slug: string;
   html: string;
-  feature_image: string;
-  feature_image_caption: string;
-  tags: { name: string }[];
+  tags: { [name: string]: string }[];
 };
 
-type Props =
+export type Props =
   | {
-      posts: Post[];
+      posts: Post[][];
     }
   | { error: string };
 
 export async function getPosts() {
   const res = await fetch(
-    `${process.env.blog_url}/ghost/api/v3/content/posts/?key=${process.env.content_api_key}&fields=title,slug,html,feature_image,feature_image_caption&include=tags`,
+    `${process.env.BLOG_URL}/ghost/api/v3/content/posts/?key=${process.env.CONTENT_API_KEY}&limit=all&fields=title,slug,html&include=tags`,
   ).then((resp) => resp.json());
 
   const posts = res.posts;
@@ -30,21 +30,27 @@ export async function getPosts() {
   return posts;
 }
 
-export const getServerSideProps = async () => {
-  const posts = await getPosts();
-  if (typeof posts === 'undefined') {
-    return {
-      props: {
-        error: 'Nothing to see here',
-      },
-    };
-  }
-  return {
-    props: { posts },
-  };
-};
-
 export default function Home(props: Props) {
+  // Get 'current' object and fill it with userContext
+  const { scrollRef } = useContext(scrollContext);
+
+  useEffect(() => {
+    // sets the scroll to the currently stored scroll position (works when 'Back to all robots' is clicked bc. 'scroll' is set to 'false' in the link)
+    window.scrollTo(0, scrollRef.current.scrollPos);
+
+    // update the scroll position on change (called in listener for the event 'scroll')
+    const handleScrollPos = () => {
+      scrollRef.current.scrollPos = window.scrollY;
+    };
+
+    window.addEventListener('scroll', handleScrollPos);
+
+    // cleanup function to remove event listener again to prevent side effects
+    return () => {
+      window.removeEventListener('scroll', handleScrollPos);
+    };
+  });
+
   if ('error' in props) {
     return (
       <>
@@ -58,14 +64,6 @@ export default function Home(props: Props) {
       </>
     );
   } else {
-    const postsSortedAsArrays: Post[][] = Object.values(
-      props.posts.reduce((acc, current) => {
-        acc[current.tags[1].name] = acc[current.tags[1].name] ?? [];
-        acc[current.tags[1].name].push(current);
-        return acc;
-      }, {}),
-    );
-
     return (
       <>
         <Head>
@@ -74,66 +72,87 @@ export default function Home(props: Props) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="grid justify-items-stretch gap-y-16">
-          {postsSortedAsArrays.map((postGroup) => {
-            postGroup.sort((a, b) =>
-              a.tags[0].name > b.tags[0].name ? 1 : -1,
-            );
-            return (
-              <div
-                className="grid grid-cols-3 gap-x-5 lg:gap-x-16 "
-                key={postGroup[0]?.tags[1]?.name}
-              >
-                {postGroup.map((post) => {
-                  return (
-                    <Link
-                      href={`${server}/text/${post.slug}`}
-                      key={post.slug}
-                      className={
-                        post.tags[0].name === 'de'
-                          ? 'col-start-1'
-                          : post.tags[0].name === 'en'
-                          ? 'col-start-2'
-                          : 'col-start-3'
-                      }
-                    >
-                      <div
-                        lang={
+        <div className="h-screen -rotate-90 transform overflow-scroll lg:h-auto lg:transform-none lg:overflow-auto">
+          <div className="grid gap-y-16 lg:justify-items-stretch">
+            {props.posts.map((postGroup) => {
+              postGroup.sort((a, b) =>
+                a.tags[0].name > b.tags[0].name ? 1 : -1,
+              );
+              return (
+                <div
+                  className="grid grid-cols-3 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
+                  key={postGroup[0]?.tags[1]?.name}
+                >
+                  {postGroup.map((post) => {
+                    return (
+                      <Link
+                        href={`${server}/text/${post.slug}`}
+                        key={post.slug}
+                        className={
                           post.tags[0].name === 'de'
-                            ? 'de'
+                            ? 'col-start-1'
                             : post.tags[0].name === 'en'
-                            ? 'en'
-                            : 'ja'
+                            ? 'col-start-2'
+                            : 'col-start-3'
                         }
-                        className="border border-black p-2 hover:shadow-xl"
                       >
-                        {post.feature_image ? (
-                          <img
-                            alt={`Illustration for the text ${post.title}`}
-                            src={post.feature_image}
-                          />
-                        ) : null}
-                        {post.feature_image_caption ? (
-                          <p className="text-xs">
-                            {post.feature_image_caption}
-                          </p>
-                        ) : null}
-
-                        <h2 className="mb-2 font-bold">{post.title}</h2>
-
                         <div
-                          dangerouslySetInnerHTML={{ __html: post.html }}
-                          className="break-words"
-                        />
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            );
-          })}
+                          lang={
+                            post.tags[0].name === 'de'
+                              ? 'de'
+                              : post.tags[0].name === 'en'
+                              ? 'en'
+                              : 'ja'
+                          }
+                          className="bg-white p-2 hover:shadow-xl "
+                        >
+                          <h2 className="mb-2 font-bold">{post.title}</h2>
+
+                          <div
+                            dangerouslySetInnerHTML={{ __html: post.html }}
+                            className="break-words"
+                          />
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </>
     );
   }
+}
+
+export async function getServerSideProps() {
+  const fetchedPosts = await getPosts();
+  if (typeof fetchedPosts === 'undefined') {
+    return {
+      props: {
+        error: 'Nothing to see here',
+      },
+    };
+  }
+
+  const tagCheckedPosts = fetchedPosts.filter((post: Post) => {
+    return (
+      typeof post.tags[1] !== 'undefined' && typeof post.tags[0] !== 'undefined'
+    );
+  });
+
+  const posts: Post[][] = Object.values(
+    tagCheckedPosts.reduce((acc: Post, current: Post) => {
+      const propertyToSortBy = current.tags[1]
+        .name as keyof typeof current.tags[1];
+      acc[propertyToSortBy] = acc[propertyToSortBy] ?? [];
+      acc[propertyToSortBy].push(current);
+      return acc;
+    }, {}),
+  );
+
+  return {
+    props: { posts },
+  };
 }
