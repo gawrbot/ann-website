@@ -8,6 +8,7 @@ const dev = process.env.NODE_ENV !== 'production';
 export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
 
 export type Post = {
+  [index: string]: any;
   title: string;
   slug: string;
   html: string;
@@ -144,8 +145,7 @@ export async function getServerSideProps() {
 
   const posts: Post[][] = Object.values(
     tagCheckedPosts.reduce((acc: Post, current: Post) => {
-      const propertyToSortBy = current.tags[1]
-        .name as keyof typeof current.tags[1];
+      const propertyToSortBy = current.tags[1].name;
       acc[propertyToSortBy] = acc[propertyToSortBy] ?? [];
       acc[propertyToSortBy].push(current);
       return acc;
