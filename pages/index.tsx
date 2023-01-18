@@ -66,15 +66,15 @@ export default function Home(props: Props) {
     );
   } else {
     return (
-      <>
+      <div className="flex h-screen lg:h-full overflow-x-scroll lg:overflow-auto ">
         <Head>
           <title>Ann Website</title>
           <meta name="description" content="Ann's Website in 3 languages" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="h-screen -rotate-90 transform overflow-scroll lg:h-auto lg:transform-none lg:overflow-auto">
-          <div className="grid gap-y-16 lg:justify-items-stretch">
+        <div className="-rotate-90 transform origin-top-right lg:transform-none">
+          <div className="grid -mt-80 -ml-56 lg:m-0 gap-y-16 justify-items-stretch">
             {props.posts.map((postGroup) => {
               postGroup.sort((a, b) =>
                 a.tags[0]?.name &&
@@ -85,7 +85,7 @@ export default function Home(props: Props) {
               );
               return (
                 <div
-                  className="grid grid-cols-3 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
+                  className="grid grid-cols-3 lg:m-0 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
                   key={postGroup[0]?.tags[1]?.name}
                 >
                   {postGroup.map((post) => {
@@ -126,7 +126,7 @@ export default function Home(props: Props) {
             })}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 }
