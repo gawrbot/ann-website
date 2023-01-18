@@ -27,7 +27,11 @@ export default function Browse(props: Props) {
       <div className="flex flex-col items-center">
         {props.posts.map((postGroup) => {
           postGroup.sort((a: Post, b: Post) =>
-            a.tags[0].name > b.tags[0].name ? 1 : -1,
+            a.tags[0]?.name &&
+            b.tags[0]?.name &&
+            a.tags[0].name > b.tags[0].name
+              ? 1
+              : -1,
           );
           return (
             <ul className="list-disc" key={postGroup[0]?.tags[1]?.name}>
@@ -36,9 +40,9 @@ export default function Browse(props: Props) {
                   <li
                     key={post.slug}
                     lang={
-                      post.tags[0].name === 'de'
+                      post.tags[0]?.name === 'de'
                         ? 'de'
-                        : post.tags[0].name === 'en'
+                        : post.tags[0]?.name === 'en'
                         ? 'en'
                         : 'ja'
                     }
@@ -68,17 +72,21 @@ export async function getServerSideProps() {
       },
     };
   }
+  const tagCheckedPosts = fetchedPosts.filter((post: Post) => {
+    return (
+      typeof post.tags[1] !== 'undefined' && typeof post.tags[0] !== 'undefined'
+    );
+  });
 
   const posts: Post[][] = Object.values(
-    fetchedPosts.reduce((acc: Post, current: Post) => {
-      const propertyToSortBy = current.tags[1]
-        .name as keyof typeof current.tags[1];
-      acc[propertyToSortBy] = acc[propertyToSortBy] ?? [];
-      acc[propertyToSortBy].push(current);
+    tagCheckedPosts.reduce((acc: Post, current: Post) => {
+      const propertyToSortBy = current.tags[1]!.name;
+      acc[propertyToSortBy!] = acc[propertyToSortBy!] ?? [];
+      acc[propertyToSortBy!].push(current);
       return acc;
     }, {}),
   );
-  // console.log('props back', posts);
+
   return {
     props: { posts },
   };

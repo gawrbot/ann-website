@@ -77,7 +77,11 @@ export default function Home(props: Props) {
           <div className="grid gap-y-16 lg:justify-items-stretch">
             {props.posts.map((postGroup) => {
               postGroup.sort((a, b) =>
-                a.tags[0].name > b.tags[0].name ? 1 : -1,
+                a.tags[0]?.name &&
+                b.tags[0]?.name &&
+                a.tags[0].name > b.tags[0].name
+                  ? 1
+                  : -1,
               );
               return (
                 <div
@@ -90,18 +94,18 @@ export default function Home(props: Props) {
                         href={`${server}/text/${post.slug}`}
                         key={post.slug}
                         className={
-                          post.tags[0].name === 'de'
+                          post.tags[0]?.name === 'de'
                             ? 'col-start-1'
-                            : post.tags[0].name === 'en'
+                            : post.tags[0]?.name === 'en'
                             ? 'col-start-2'
                             : 'col-start-3'
                         }
                       >
                         <div
                           lang={
-                            post.tags[0].name === 'de'
+                            post.tags[0]?.name === 'de'
                               ? 'de'
-                              : post.tags[0].name === 'en'
+                              : post.tags[0]?.name === 'en'
                               ? 'en'
                               : 'ja'
                           }
@@ -143,11 +147,13 @@ export async function getServerSideProps() {
     );
   });
 
+  // console.log('checked tags', tagCheckedPosts);
+
   const posts: Post[][] = Object.values(
     tagCheckedPosts.reduce((acc: Post, current: Post) => {
-      const propertyToSortBy = current.tags[1].name;
-      acc[propertyToSortBy] = acc[propertyToSortBy] ?? [];
-      acc[propertyToSortBy].push(current);
+      const propertyToSortBy = current.tags[1]!.name;
+      acc[propertyToSortBy!] = acc[propertyToSortBy!] ?? [];
+      acc[propertyToSortBy!].push(current);
       return acc;
     }, {}),
   );
