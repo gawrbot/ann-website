@@ -73,8 +73,8 @@ export default function Home(props: Props) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="-rotate-90 transform origin-top-right lg:transform-none">
-          <div className="grid -mt-80 -ml-56 lg:m-0 gap-y-16 justify-items-stretch">
+        <div className="translate-x-full -rotate-90 origin-left transform lg:transform-none">
+          <div className="grid -ml-56 md:mr-40 lg:m-0 gap-y-16 justify-items-stretch">
             {props.posts.map((postGroup) => {
               postGroup.sort((a, b) =>
                 a.tags[0]?.name &&
