@@ -112,7 +112,7 @@ export default function Home(props: Props) {
                         className="bg-white p-2 hover:shadow-xl "
                       >
                         <h2 className="mb-2 font-bold">{post.fields.title}</h2>
-                        {/* Setting: DOMPurify (https://github.com/cure53/DOMPurify) + Markdown Parser (https://github.com/markedjs/marked) */}
+                        {/* Setting the html: DOMPurify (https://github.com/cure53/DOMPurify) + Markdown Parser (https://github.com/markedjs/marked) */}
                         <div
                           dangerouslySetInnerHTML={{ __html: post.fields.text }}
                           className="break-words"
