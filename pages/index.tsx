@@ -66,65 +66,63 @@ export default function Home(props: Props) {
     );
   } else {
     return (
-      <div className="flex h-screen lg:h-full overflow-x-scroll lg:overflow-auto ">
+      <div className="flex h-screen lg:h-full">
         <Head>
           <title>Ann Website</title>
           <meta name="description" content="Ann's Website in 3 languages" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="translate-x-full -rotate-90 origin-left transform lg:transform-none">
-          <div className="grid -ml-56 md:mr-40 lg:m-0 gap-y-16 justify-items-stretch">
-            {props.posts.map((postGroup) => {
-              postGroup.sort((a, b) =>
-                a.tags[0]?.name &&
-                b.tags[0]?.name &&
-                a.tags[0].name > b.tags[0].name
-                  ? 1
-                  : -1,
-              );
-              return (
-                <div
-                  className="grid grid-cols-3 lg:m-0 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
-                  key={postGroup[0]?.tags[1]?.name}
-                >
-                  {postGroup.map((post) => {
-                    return (
-                      <Link
-                        href={`${server}/text/${post.slug}`}
-                        key={post.slug}
-                        className={
+        <div className="grid md:mr-40 lg:m-0 gap-y-16 justify-items-stretch">
+          {props.posts.map((postGroup) => {
+            postGroup.sort((a, b) =>
+              a.tags[0]?.name &&
+              b.tags[0]?.name &&
+              a.tags[0].name > b.tags[0].name
+                ? 1
+                : -1,
+            );
+            return (
+              <div
+                className="grid grid-cols-3 lg:m-0 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
+                key={postGroup[0]?.tags[1]?.name}
+              >
+                {postGroup.map((post) => {
+                  return (
+                    <Link
+                      href={`${server}/text/${post.slug}`}
+                      key={post.slug}
+                      className={
+                        post.tags[0]?.name === 'de'
+                          ? 'col-start-1'
+                          : post.tags[0]?.name === 'en'
+                          ? 'col-start-2'
+                          : 'col-start-3'
+                      }
+                    >
+                      <div
+                        lang={
                           post.tags[0]?.name === 'de'
-                            ? 'col-start-1'
+                            ? 'de'
                             : post.tags[0]?.name === 'en'
-                            ? 'col-start-2'
-                            : 'col-start-3'
+                            ? 'en'
+                            : 'ja'
                         }
+                        className="bg-white p-2 hover:shadow-xl "
                       >
-                        <div
-                          lang={
-                            post.tags[0]?.name === 'de'
-                              ? 'de'
-                              : post.tags[0]?.name === 'en'
-                              ? 'en'
-                              : 'ja'
-                          }
-                          className="bg-white p-2 hover:shadow-xl "
-                        >
-                          <h2 className="mb-2 font-bold">{post.title}</h2>
+                        <h2 className="mb-2 font-bold">{post.title}</h2>
 
-                          <div
-                            dangerouslySetInnerHTML={{ __html: post.html }}
-                            className="break-words"
-                          />
-                        </div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: post.html }}
+                          className="break-words"
+                        />
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
       </div>
     );

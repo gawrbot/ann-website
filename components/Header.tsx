@@ -6,8 +6,8 @@ export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-between px-3 pt-3 sticky">
-      <div className=" text-xl">
+    <div className="flex fixed w-full items-center justify-between px-3 pt-3 h-28">
+      <div className="text-xl">
         <Link href="/">
           <h1 lang="de">Titel</h1>
           <h1 lang="en">Title</h1>
