@@ -27,7 +27,6 @@ export default function useSearch<T>({ dataSet, keys }: IUseSearchProps<T>) {
 
     return new Fuse(dataSet, options);
   }, [dataSet, keys]);
-
   const results = useMemo(() => {
     if (!searchValue) return;
 

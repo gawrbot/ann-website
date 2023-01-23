@@ -1,12 +1,25 @@
+import { documentToPlainTextString } from '@contentful/rich-text-plain-text-renderer';
 import Link from 'next/link';
 import useSearch from '../utils/useSearch';
-import { Props, server } from './';
+import { getPosts, Props, server } from './';
 
-export default function Search(props: Props) {
+export default function Search(props: any) {
+  const mainText =
+    'posts' in props &&
+    props.posts.map((post: any) =>
+      documentToPlainTextString(post.fields.richText),
+    );
+
+  console.log('mainText', mainText);
+
   const { results, searchValue, setSearchValue } = useSearch<any>({
     dataSet:
       'posts' in props ? props.posts : ({} as { [key: string]: undefined }[]),
-    keys: ['title', 'html'],
+    keys: [
+      'dataSet.fields.title',
+      'dataSet.fields.richText.content[0].content[0].value',
+      'dataSet.fields.slug',
+    ],
   });
 
   return (
@@ -35,12 +48,31 @@ export default function Search(props: Props) {
           results.map((result) => {
             console.log('result', result);
             return (
-              <Link href={`${server}/text/${result.slug}`} key={result.title}>
-                <li>{result.title}</li>
+              <Link
+                href={`${server}/text/${result.fields.slug}`}
+                key={result.fields.title}
+              >
+                <li>{result.fields.title}</li>
               </Link>
             );
           })}
       </ul>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const posts = await getPosts();
+
+  if (typeof posts === 'undefined') {
+    return {
+      props: {
+        error: 'Nothing to see here',
+      },
+    };
+  }
+
+  return {
+    props: { posts },
+  };
 }

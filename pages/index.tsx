@@ -1,3 +1,4 @@
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
@@ -77,11 +78,7 @@ export default function Home(props: Props) {
         <div className="grid md:mr-40 lg:m-0 gap-y-16 justify-items-stretch">
           {props.posts.map((postGroup) => {
             postGroup.sort((a, b) =>
-              a.fields.languageTag &&
-              b.fields.languageTag &&
-              a.fields.languageTag > b.fields.languageTag
-                ? 1
-                : -1,
+              a.fields.languageTag > b.fields.languageTag ? 1 : -1,
             );
             return (
               <div
@@ -102,21 +99,11 @@ export default function Home(props: Props) {
                       }
                     >
                       <div
-                        lang={
-                          post.fields.languageTag === 'de'
-                            ? 'de'
-                            : post.fields.languageTag === 'en'
-                            ? 'en'
-                            : 'ja'
-                        }
+                        lang={post.fields.languageTag}
                         className="bg-white p-2 hover:shadow-xl "
                       >
-                        <h2 className="mb-2 font-bold">{post.fields.title}</h2>
-                        {/* Setting the html: DOMPurify (https://github.com/cure53/DOMPurify) + Markdown Parser (https://github.com/markedjs/marked) */}
-                        <div
-                          dangerouslySetInnerHTML={{ __html: post.fields.text }}
-                          className="break-words"
-                        />
+                        <h2>{post.fields.title}</h2>
+                        {documentToReactComponents(post.fields.richText)}
                       </div>
                     </Link>
                   );
@@ -149,8 +136,6 @@ export async function getServerSideProps() {
       return acc;
     }, {}),
   );
-
-  console.log('sortedPosts', posts);
 
   return {
     props: { posts },

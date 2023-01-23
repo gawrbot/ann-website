@@ -1,3 +1,4 @@
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Link from 'next/link';
 import { Post } from '../';
 
@@ -29,8 +30,13 @@ export default function Text(props: Props) {
         </Link>
       </p>
       <div className="bg-white px-2 py-1">
-        <h1 className="mb-2 text-lg font-bold">{props.post.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: props.post.html }} />
+        <div
+          lang={props.post.fields.languageTag}
+          className="bg-white p-2 hover:shadow-xl "
+        >
+          <h1 className="mb-2 font-bold">{props.post.fields.title}</h1>
+          {documentToReactComponents(props.post.fields.richText)}
+        </div>
       </div>
     </div>
   );
@@ -39,10 +45,10 @@ export default function Text(props: Props) {
 export async function getServerSideProps({ params }: any) {
   async function getPost(slug: string) {
     const res = await fetch(
-      `${process.env.BLOG_URL}/ghost/api/v3/content/posts/slug/${slug}?key=${process.env.CONTENT_API_KEY}&fields=title,slug,html`,
+      `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}&content_type=post&fields.slug[in]=${slug}`,
     ).then((resp) => resp.json());
 
-    const posts = res.posts;
+    const posts = res.items;
 
     return posts?.[0];
   }
