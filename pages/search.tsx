@@ -1,24 +1,15 @@
-import { documentToPlainTextString } from '@contentful/rich-text-plain-text-renderer';
 import Link from 'next/link';
 import useSearch from '../utils/useSearch';
-import { getPosts, Props, server } from './';
+import { getPosts, server } from './';
 
 export default function Search(props: any) {
-  const mainText =
-    'posts' in props &&
-    props.posts.map((post: any) =>
-      documentToPlainTextString(post.fields.richText),
-    );
-
-  console.log('mainText', mainText);
-
   const { results, searchValue, setSearchValue } = useSearch<any>({
     dataSet:
       'posts' in props ? props.posts : ({} as { [key: string]: undefined }[]),
     keys: [
-      'dataSet.fields.title',
-      'dataSet.fields.richText.content[0].content[0].value',
-      'dataSet.fields.slug',
+      'fields.title',
+      'fields.richText.content.content.value',
+      'fields.slug',
     ],
   });
 
@@ -30,7 +21,7 @@ export default function Search(props: any) {
         }}
       >
         <label className="m-3" htmlFor="query">
-          Search all:
+          Search all texts:
         </label>
         <input
           value={searchValue}
@@ -44,18 +35,19 @@ export default function Search(props: any) {
         />
       </form>
       <ul>
-        {results &&
-          results.map((result) => {
-            console.log('result', result);
-            return (
-              <Link
-                href={`${server}/text/${result.fields.slug}`}
-                key={result.fields.title}
-              >
-                <li>{result.fields.title}</li>
-              </Link>
-            );
-          })}
+        {results
+          ? results.map((result) => {
+              console.log('result', result);
+              return (
+                <Link
+                  href={`${server}/text/${result.fields.slug}`}
+                  key={result.fields.title}
+                >
+                  <li>{result.fields.title}</li>
+                </Link>
+              );
+            })
+          : null}
       </ul>
     </>
   );
