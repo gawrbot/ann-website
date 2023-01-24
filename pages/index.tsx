@@ -65,8 +65,8 @@ export default function Home(props: Props) {
     return (
       <div className="flex h-screen lg:h-full">
         <Head>
-          <title>Ann Website</title>
-          <meta name="description" content="Ann's Website in 3 languages" />
+          <title>Exophony</title>
+          <meta name="description" content="Exophony" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>

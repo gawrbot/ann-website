@@ -9,9 +9,9 @@ export default function Header() {
     <div className="flex fixed w-full items-center justify-between px-3 pt-3 h-28">
       <div className="text-xl">
         <Link href="/">
-          <h1 lang="de">Titel</h1>
-          <h1 lang="en">Title</h1>
-          <h1 lang="ja">見出し</h1>
+          <h1 lang="de">Exophonieprojekt</h1>
+          <h1 lang="en">Exophony Project</h1>
+          <h1 lang="ja">エクソフォニー • プロジェクト</h1>
         </Link>
       </div>
       <section className="flex">
