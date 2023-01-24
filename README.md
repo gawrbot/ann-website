@@ -1,11 +1,11 @@
 # Dreisprachiger Blog für Ann Cotten und Associates
 
-Ich arbeite gerade an einem Blog für Schriftstellerni Ann Cotten in den Sprachen Deutsch, Englisch und Japanisch.
+Ich arbeite an einem Blog für Schriftstellerni Ann Cotten in den Sprachen Deutsch, Englisch und Japanisch.
 
 ## Tools & Technologien
 
-- CMS: Ghost,
-- Deployment: Fly.io,
+- CMS: Contentful,
+- Deployment: Fly.io, Vercel
 - CSS: Tailwind,
 - Framework: Next.js
 - Sprachen: TypeScript, JavaScript
