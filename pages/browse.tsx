@@ -24,40 +24,30 @@ export default function Browse(props: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <h1 className="font-bold text-center mb-5">Browse through the texts</h1>
       <div className="flex flex-col items-center">
-        {props.posts.map((postGroup) => {
-          postGroup.sort((a: Post, b: Post) =>
-            a.tags[0]?.name &&
-            b.tags[0]?.name &&
-            a.tags[0].name > b.tags[0].name
-              ? 1
-              : -1,
-          );
-          return (
-            <ul className="list-disc" key={postGroup[0]?.tags[1]?.name}>
-              {postGroup.map((post: Post) => {
-                return (
-                  <li
-                    key={post.slug}
-                    lang={
-                      post.tags[0]?.name === 'de'
-                        ? 'de'
-                        : post.tags[0]?.name === 'en'
-                        ? 'en'
-                        : 'ja'
-                    }
-                  >
-                    <Link href={`${server}/text/${post.slug}`}>
-                      <h2 className="mt-4 font-bold text-black hover:text-blue-600">
-                        {post.title}
-                      </h2>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          );
-        })}
+        <div className="">
+          {props.posts.map((postGroup) => {
+            postGroup.sort((a, b) =>
+              a.fields.languageTag > b.fields.languageTag ? 1 : -1,
+            );
+            return (
+              <ul className="list-disc" key="0">
+                {postGroup.map((post: Post) => {
+                  return (
+                    <li key={post.fields.slug} lang={post.fields.languageTag}>
+                      <Link href={`${server}/text/${post.fields.slug}`}>
+                        <h2 className="text-black font-normal hover:text-blue-600">
+                          {post.fields.title}
+                        </h2>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            );
+          })}
+        </div>
       </div>
     </>
   );
@@ -65,6 +55,7 @@ export default function Browse(props: Props) {
 
 export async function getServerSideProps() {
   const fetchedPosts = await getPosts();
+
   if (typeof fetchedPosts === 'undefined') {
     return {
       props: {
@@ -72,17 +63,12 @@ export async function getServerSideProps() {
       },
     };
   }
-  const tagCheckedPosts = fetchedPosts.filter((post: Post) => {
-    return (
-      typeof post.tags[1] !== 'undefined' && typeof post.tags[0] !== 'undefined'
-    );
-  });
 
   const posts: Post[][] = Object.values(
-    tagCheckedPosts.reduce((acc: Post, current: Post) => {
-      const propertyToSortBy = current.tags[1]!.name;
-      acc[propertyToSortBy!] = acc[propertyToSortBy!] ?? [];
-      acc[propertyToSortBy!].push(current);
+    fetchedPosts.reduce((acc: Post, current: Post) => {
+      const propertyToSortBy = current.fields.idTag;
+      acc[propertyToSortBy] = acc[propertyToSortBy] ?? [];
+      acc[propertyToSortBy].push(current);
       return acc;
     }, {}),
   );

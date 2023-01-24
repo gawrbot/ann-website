@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import useSearch from '../utils/useSearch';
-import { Props, server } from './';
+import { getPosts, server } from './';
 
-export default function Search(props: Props) {
+export default function Search(props: any) {
   const { results, searchValue, setSearchValue } = useSearch<any>({
     dataSet:
       'posts' in props ? props.posts : ({} as { [key: string]: undefined }[]),
-    keys: ['title', 'html'],
+    keys: [
+      'fields.title',
+      'fields.richText.content.content.value',
+      'fields.slug',
+    ],
   });
 
   return (
@@ -17,7 +21,7 @@ export default function Search(props: Props) {
         }}
       >
         <label className="m-3" htmlFor="query">
-          Search all:
+          Search all texts:
         </label>
         <input
           value={searchValue}
@@ -31,16 +35,36 @@ export default function Search(props: Props) {
         />
       </form>
       <ul>
-        {results &&
-          results.map((result) => {
-            console.log('result', result);
-            return (
-              <Link href={`${server}/text/${result.slug}`} key={result.title}>
-                <li>{result.title}</li>
-              </Link>
-            );
-          })}
+        {results
+          ? results.map((result) => {
+              console.log('result', result);
+              return (
+                <Link
+                  href={`${server}/text/${result.fields.slug}`}
+                  key={result.fields.title}
+                >
+                  <li>{result.fields.title}</li>
+                </Link>
+              );
+            })
+          : null}
       </ul>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const posts = await getPosts();
+
+  if (typeof posts === 'undefined') {
+    return {
+      props: {
+        error: 'Nothing to see here',
+      },
+    };
+  }
+
+  return {
+    props: { posts },
+  };
 }

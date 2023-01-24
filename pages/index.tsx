@@ -1,3 +1,4 @@
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
@@ -10,9 +11,10 @@ export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
 export type Post = {
   [index: string]: any;
   title: string;
+  text: string;
   slug: string;
-  html: string;
-  tags: { [name: string]: string }[];
+  languageTag: string;
+  idTag: string;
 };
 
 export type Props =
@@ -23,10 +25,10 @@ export type Props =
 
 export async function getPosts() {
   const res = await fetch(
-    `${process.env.BLOG_URL}/ghost/api/v3/content/posts/?key=${process.env.CONTENT_API_KEY}&limit=all&fields=title,slug,html&include=tags`,
+    `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}`,
   ).then((resp) => resp.json());
 
-  const posts = res.posts;
+  const posts = res.items;
 
   return posts;
 }
@@ -76,46 +78,32 @@ export default function Home(props: Props) {
         <div className="grid md:mr-40 lg:m-0 gap-y-16 justify-items-stretch">
           {props.posts.map((postGroup) => {
             postGroup.sort((a, b) =>
-              a.tags[0]?.name &&
-              b.tags[0]?.name &&
-              a.tags[0].name > b.tags[0].name
-                ? 1
-                : -1,
+              a.fields.languageTag > b.fields.languageTag ? 1 : -1,
             );
             return (
               <div
                 className="grid grid-cols-3 lg:m-0 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
-                key={postGroup[0]?.tags[1]?.name}
+                key="0"
               >
                 {postGroup.map((post) => {
                   return (
                     <Link
-                      href={`${server}/text/${post.slug}`}
-                      key={post.slug}
+                      href={`${server}/text/${post.fields.slug}`}
+                      key={post.fields.slug}
                       className={
-                        post.tags[0]?.name === 'de'
+                        post.fields.languageTag === 'de'
                           ? 'col-start-1'
-                          : post.tags[0]?.name === 'en'
+                          : post.fields.languageTag === 'en'
                           ? 'col-start-2'
                           : 'col-start-3'
                       }
                     >
                       <div
-                        lang={
-                          post.tags[0]?.name === 'de'
-                            ? 'de'
-                            : post.tags[0]?.name === 'en'
-                            ? 'en'
-                            : 'ja'
-                        }
+                        lang={post.fields.languageTag}
                         className="bg-white p-2 hover:shadow-xl "
                       >
-                        <h2 className="mb-2 font-bold">{post.title}</h2>
-
-                        <div
-                          dangerouslySetInnerHTML={{ __html: post.html }}
-                          className="break-words"
-                        />
+                        <h2>{post.fields.title}</h2>
+                        {documentToReactComponents(post.fields.richText)}
                       </div>
                     </Link>
                   );
@@ -131,6 +119,7 @@ export default function Home(props: Props) {
 
 export async function getServerSideProps() {
   const fetchedPosts = await getPosts();
+
   if (typeof fetchedPosts === 'undefined') {
     return {
       props: {
@@ -139,19 +128,11 @@ export async function getServerSideProps() {
     };
   }
 
-  const tagCheckedPosts = fetchedPosts.filter((post: Post) => {
-    return (
-      typeof post.tags[1] !== 'undefined' && typeof post.tags[0] !== 'undefined'
-    );
-  });
-
-  // console.log('checked tags', tagCheckedPosts);
-
   const posts: Post[][] = Object.values(
-    tagCheckedPosts.reduce((acc: Post, current: Post) => {
-      const propertyToSortBy = current.tags[1]!.name;
-      acc[propertyToSortBy!] = acc[propertyToSortBy!] ?? [];
-      acc[propertyToSortBy!].push(current);
+    fetchedPosts.reduce((acc: Post, current: Post) => {
+      const propertyToSortBy = current.fields.idTag;
+      acc[propertyToSortBy] = acc[propertyToSortBy] ?? [];
+      acc[propertyToSortBy].push(current);
       return acc;
     }, {}),
   );
