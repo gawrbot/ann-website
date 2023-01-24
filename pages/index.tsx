@@ -57,11 +57,6 @@ export default function Home(props: Props) {
   if ('error' in props) {
     return (
       <>
-        <p>
-          <Link href="/">
-            <span className="underline">Go back</span>
-          </Link>
-        </p>
         <h1>Something went wrong 👀</h1>
         <p>{props.error}</p>
       </>
@@ -123,7 +118,7 @@ export async function getServerSideProps() {
   if (typeof fetchedPosts === 'undefined') {
     return {
       props: {
-        error: 'Nothing to see here',
+        error: 'Fetching the texts from the CMS seems to have failed',
       },
     };
   }
