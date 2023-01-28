@@ -1,12 +1,15 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
-import Link from 'next/link';
-import { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
 import { scrollContext } from '../components/ScrollContext';
 
 const dev = process.env.NODE_ENV !== 'production';
 
 export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
+
+// Adapt for animation: https://codesandbox.io/s/wgcvb
+// Adapt for states: https://github.dev/upleveled/next-js-example-fall-2022-vienna-austria/tree/main/pages
 
 export type Post = {
   [index: string]: any;
@@ -36,19 +39,16 @@ export async function getPosts() {
 export default function Home(props: Props) {
   // Get 'current' object and fill it with userContext
   const { scrollRef } = useContext(scrollContext);
+  const router = useRouter();
+  const [isTextOpen, setIsTextOpen] = useState(Boolean);
+  const [openingSlug, setOpeningSlug] = useState<string | undefined>();
 
   useEffect(() => {
-    // sets the scroll to the currently stored scroll position (works when 'Back to all robots' is clicked bc. 'scroll' is set to 'false' in the link)
     window.scrollTo(0, scrollRef.current.scrollPos);
-
-    // update the scroll position on change (called in listener for the event 'scroll')
     const handleScrollPos = () => {
       scrollRef.current.scrollPos = window.scrollY;
     };
-
     window.addEventListener('scroll', handleScrollPos);
-
-    // cleanup function to remove event listener again to prevent side effects
     return () => {
       window.removeEventListener('scroll', handleScrollPos);
     };
@@ -70,20 +70,23 @@ export default function Home(props: Props) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="grid md:mr-40 lg:m-0 gap-y-16 justify-items-stretch">
+
+        <div className="grid w-screen mt-12 gap-y-16 justify-items-stretch">
           {props.posts.map((postGroup) => {
             postGroup.sort((a, b) =>
               a.fields.languageTag > b.fields.languageTag ? 1 : -1,
             );
             return (
               <div
-                className="grid grid-cols-3 lg:m-0 gap-x-3 px-2 lg:gap-x-10 lg:px-6"
-                key="0"
+                className="grid grid-cols-3 place-items-start gap-x-3 px-2 lg:gap-x-10 lg:px-6 justify-items-center"
+                key={postGroup[0]?.fields.idTag}
               >
                 {postGroup.map((post) => {
+                  const isTextOpened = openingSlug === post.fields.slug;
+
                   return (
-                    <Link
-                      href={`${server}/text/${post.fields.slug}`}
+                    <div
+                      lang={post.fields.languageTag}
                       key={post.fields.slug}
                       className={
                         post.fields.languageTag === 'de'
@@ -93,14 +96,64 @@ export default function Home(props: Props) {
                           : 'col-start-3'
                       }
                     >
-                      <div
-                        lang={post.fields.languageTag}
-                        className="bg-white p-2 hover:shadow-xl "
-                      >
-                        <h2>{post.fields.title}</h2>
-                        {documentToReactComponents(post.fields.richText)}
-                      </div>
-                    </Link>
+                      {!isTextOpened ? (
+                        <div className="h-auto">
+                          <button
+                            onClick={() => {
+                              setOpeningSlug(post.fields.slug);
+                              setIsTextOpen(true);
+                            }}
+                            onKeyDown={() => {
+                              setOpeningSlug(post.fields.slug);
+                              setIsTextOpen(true);
+                            }}
+                          >
+                            <svg
+                              className="h-8 w-8"
+                              viewBox="0 0 10 10"
+                              fill="white"
+                            >
+                              <rect height="8" width="8" />
+                            </svg>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left">
+                          <div className="justify-self-end text-3xl text-gray-300 mb-2">
+                            <button
+                              className="mr-2"
+                              onClick={() => {
+                                setOpeningSlug(undefined);
+                                setIsTextOpen(false);
+                              }}
+                              onKeyDown={() => {
+                                setOpeningSlug(undefined);
+                                setIsTextOpen(false);
+                              }}
+                            >
+                              &#8211;
+                            </button>
+                            <button
+                              className=""
+                              onClick={async () => {
+                                await router.push(
+                                  `${server}/text/${post.fields.slug}`,
+                                );
+                              }}
+                              onKeyDown={async () => {
+                                await router.push(
+                                  `${server}/text/${post.fields.slug}`,
+                                );
+                              }}
+                            >
+                              &#8599;
+                            </button>
+                          </div>
+                          <h2 className="text-left">{post.fields.title}</h2>
+                          {documentToReactComponents(post.fields.richText)}
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>

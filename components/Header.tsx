@@ -16,6 +16,7 @@ export default function Header() {
       </div>
       <section className="flex">
         <nav>
+          {/* Hamburger-Button zum Öffnen */}
           <button
             className="space-y-2"
             onClick={() => setIsNavOpen((prev) => !prev)}
@@ -25,7 +26,7 @@ export default function Header() {
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
           </button>
-
+          {/* Nav-Menü offen/nicht offen */}
           <div
             className={
               isNavOpen
@@ -33,6 +34,7 @@ export default function Header() {
                 : 'hidden'
             }
           >
+            {/* Kreuz-Button zum Schließen */}
             <button
               className="absolute top-0 right-0 px-8 py-8"
               onClick={() => setIsNavOpen(false)}
