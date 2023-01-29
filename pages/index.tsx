@@ -9,7 +9,6 @@ const dev = process.env.NODE_ENV !== 'production';
 export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
 
 // Adapt for animation: https://codesandbox.io/s/wgcvb
-// Adapt for states: https://github.dev/upleveled/next-js-example-fall-2022-vienna-austria/tree/main/pages
 
 export type Post = {
   [index: string]: any;
@@ -37,11 +36,9 @@ export async function getPosts() {
 }
 
 export default function Home(props: Props) {
-  // Get 'current' object and fill it with userContext
   const { scrollRef } = useContext(scrollContext);
   const router = useRouter();
-  const [isTextOpen, setIsTextOpen] = useState(Boolean);
-  const [openingSlug, setOpeningSlug] = useState<string | undefined>();
+  const [isOpen, setIsOpen] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, scrollRef.current.scrollPos);
@@ -53,6 +50,13 @@ export default function Home(props: Props) {
       window.removeEventListener('scroll', handleScrollPos);
     };
   });
+
+  function toggleOpen(slug: string) {
+    setIsOpen({
+      ...isOpen,
+      [slug]: !isOpen[slug as keyof typeof isOpen],
+    });
+  }
 
   if ('error' in props) {
     return (
@@ -82,8 +86,6 @@ export default function Home(props: Props) {
                 key={postGroup[0]?.fields.idTag}
               >
                 {postGroup.map((post) => {
-                  const isTextOpened = openingSlug === post.fields.slug;
-
                   return (
                     <div
                       lang={post.fields.languageTag}
@@ -96,39 +98,17 @@ export default function Home(props: Props) {
                           : 'col-start-3'
                       }
                     >
-                      {!isTextOpened ? (
-                        <div className="h-auto">
-                          <button
-                            onClick={() => {
-                              setOpeningSlug(post.fields.slug);
-                              setIsTextOpen(true);
-                            }}
-                            onKeyDown={() => {
-                              setOpeningSlug(post.fields.slug);
-                              setIsTextOpen(true);
-                            }}
-                          >
-                            <svg
-                              className="h-8 w-8"
-                              viewBox="0 0 10 10"
-                              fill="white"
-                            >
-                              <rect height="8" width="8" />
-                            </svg>
-                          </button>
-                        </div>
-                      ) : (
+                      {isOpen[post.fields.slug as keyof typeof isOpen] ===
+                      true ? (
                         <div className="grid justify-items-start bg-white p-2 pt-0 text-left">
                           <div className="justify-self-end text-3xl text-gray-300 mb-2">
                             <button
                               className="mr-2"
                               onClick={() => {
-                                setOpeningSlug(undefined);
-                                setIsTextOpen(false);
+                                toggleOpen(post.fields.slug);
                               }}
                               onKeyDown={() => {
-                                setOpeningSlug(undefined);
-                                setIsTextOpen(false);
+                                toggleOpen(post.fields.slug);
                               }}
                             >
                               &#8211;
@@ -151,6 +131,25 @@ export default function Home(props: Props) {
                           </div>
                           <h2 className="text-left">{post.fields.title}</h2>
                           {documentToReactComponents(post.fields.richText)}
+                        </div>
+                      ) : (
+                        <div className="h-auto">
+                          <button
+                            onClick={() => {
+                              toggleOpen(post.fields.slug);
+                            }}
+                            onKeyDown={() => {
+                              toggleOpen(post.fields.slug);
+                            }}
+                          >
+                            <svg
+                              className="h-8 w-8"
+                              viewBox="0 0 10 10"
+                              fill="white"
+                            >
+                              <rect height="8" width="8" />
+                            </svg>
+                          </button>
                         </div>
                       )}
                     </div>
