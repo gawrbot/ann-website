@@ -9,6 +9,9 @@ module.exports = {
       backgroundImage: {
         heroine: "url('../public/hw1.jpg')",
       },
+      scale: {
+        10: '0.1',
+      },
     },
   },
   plugins: [],

@@ -8,8 +8,6 @@ const dev = process.env.NODE_ENV !== 'production';
 
 export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
 
-// Adapt for animation: https://codesandbox.io/s/wgcvb
-
 export type Post = {
   [index: string]: any;
   title: string;
@@ -100,7 +98,7 @@ export default function Home(props: Props) {
                     >
                       {isOpen[post.fields.slug as keyof typeof isOpen] ===
                       true ? (
-                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left">
+                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left transform transition-transform origin-top scale-100 duration-700">
                           <div className="justify-self-end text-3xl text-gray-300 mb-2">
                             <button
                               className="mr-2"
@@ -114,7 +112,6 @@ export default function Home(props: Props) {
                               &#8211;
                             </button>
                             <button
-                              className=""
                               onClick={async () => {
                                 await router.push(
                                   `${server}/text/${post.fields.slug}`,
@@ -133,7 +130,7 @@ export default function Home(props: Props) {
                           {documentToReactComponents(post.fields.richText)}
                         </div>
                       ) : (
-                        <div className="h-auto">
+                        <div className="grid px-0 justify-items-start content-start bg-white p-2 pt-0 text-left aspect-square transform transition-transform duration-700 scale-10 overflow-hidden">
                           <button
                             onClick={() => {
                               toggleOpen(post.fields.slug);
@@ -142,13 +139,8 @@ export default function Home(props: Props) {
                               toggleOpen(post.fields.slug);
                             }}
                           >
-                            <svg
-                              className="h-8 w-8"
-                              viewBox="0 0 10 10"
-                              fill="white"
-                            >
-                              <rect height="8" width="8" />
-                            </svg>
+                            <h2 className="text-left">{post.fields.title}</h2>
+                            {documentToReactComponents(post.fields.richText)}
                           </button>
                         </div>
                       )}
