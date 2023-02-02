@@ -25,7 +25,7 @@ export type Props =
 
 export async function getPosts() {
   const res = await fetch(
-    `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}`,
+    `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}&content_type=post`,
   ).then((resp) => resp.json());
 
   const posts = res.items;
