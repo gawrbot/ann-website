@@ -1322,6 +1322,12 @@
     pg-connection-string "^2.5.0"
     postgres "^3.3.0"
 
+"@types/@vivgui/tailwindcss-hyphens":
+  version "1.0.1"
+  resolved "https://codeload.github.com/vivgui/tailwindcss-hyphens/tar.gz/f015d5b4a40d8b55c255601f5d0be5c41f815e14"
+  dependencies:
+    tailwindcss "^3.1.7"
+
 "@types/eslint@8.4.10":
   version "8.4.10"
   resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-8.4.10.tgz#19731b9685c19ed1552da7052b6f668ed7eb64bb"
@@ -1502,6 +1508,13 @@
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@upleveled/eslint-plugin-upleveled/-/eslint-plugin-upleveled-2.1.6.tgz#73d13e462d41cf64e9fdbc3da046589d1075ab3e"
   integrity sha512-TSJhqDg+EZNflHQGJbcqKbuwSY30iY3Q7EwUo7+SVzntlbXSwnrZzNWeyUqT+UUumedIpYgfcxi7rFlTVq+U5w==
+
+"@vivgui/tailwindcss-hyphens@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@vivgui/tailwindcss-hyphens/-/tailwindcss-hyphens-1.0.1.tgz#78eb5bb23923098835fb0e71d8f6ed31fe2ad37f"
+  integrity sha512-BHSSFSFusr8pbF5d5U7vyRdMP1YwuI0G0KhDqn9RliVSgzp38TDAZGmfuhAkP1nzjNf+XGwOrFom2X1RFAXbAg==
+  dependencies:
+    tailwindcss "^3.1.7"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -4712,7 +4725,7 @@ table@^6.8.1:
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
 
-tailwindcss@^3.2.4:
+tailwindcss@^3.1.7, tailwindcss@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.2.4.tgz#afe3477e7a19f3ceafb48e4b083e292ce0dc0250"
   integrity sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==

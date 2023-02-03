@@ -65,7 +65,7 @@ export default function Home(props: Props) {
     );
   } else {
     return (
-      <div className="flex h-screen lg:h-full">
+      <div className="flex h-full">
         <Head>
           <title>Exophony</title>
           <meta name="description" content="Exophony" />
@@ -80,7 +80,7 @@ export default function Home(props: Props) {
             );
             return (
               <div
-                className="grid grid-cols-3 place-items-start gap-x-3 px-2 lg:gap-x-10 lg:px-6 justify-items-center"
+                className="grid grid-cols-3 place-items-start gap-x-3 px-2 lg:gap-x-10 lg:px-6 justify-items-stretch"
                 key={postGroup[0]?.fields.idTag}
               >
                 {postGroup.map((post) => {
@@ -98,7 +98,7 @@ export default function Home(props: Props) {
                     >
                       {isOpen[post.fields.slug as keyof typeof isOpen] ===
                       true ? (
-                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left transform transition-transform origin-top scale-100 duration-700">
+                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left transform transition-transform scale-100 duration-700">
                           <div className="justify-self-end text-3xl text-gray-300 mb-2">
                             <button
                               className="mr-2"
@@ -130,7 +130,7 @@ export default function Home(props: Props) {
                           {documentToReactComponents(post.fields.richText)}
                         </div>
                       ) : (
-                        <div className="grid px-0 justify-items-start content-start bg-white p-2 pt-0 text-left aspect-square transform transition-transform duration-700 scale-10 overflow-hidden">
+                        <div className="bg-white p-2 pt-0 text-left aspect-square transform transition-transform duration-700 scale-10 overflow-hidden">
                           <button
                             onClick={() => {
                               toggleOpen(post.fields.slug);

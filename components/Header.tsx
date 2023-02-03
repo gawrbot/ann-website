@@ -14,7 +14,7 @@ export default function Header() {
           <h1 lang="ja">エクソフォニー • プロジェクト</h1>
         </Link>
       </div>
-      <section className="flex">
+      <div className="flex">
         <nav>
           {/* Hamburger-Button zum Öffnen */}
           <button
@@ -66,7 +66,7 @@ export default function Header() {
             </ul>
           </div>
         </nav>
-      </section>
+      </div>
     </div>
   );
 }
