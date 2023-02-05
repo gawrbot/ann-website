@@ -1,5 +1,6 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { scrollContext } from '../components/ScrollContext';
@@ -99,7 +100,7 @@ export default function Home(props: Props) {
                       {isOpen[post.fields.slug as keyof typeof isOpen] ===
                       true ? (
                         <div className="grid justify-items-start bg-white p-2 pt-0 text-left transform transition-transform scale-100 duration-700">
-                          <div className="justify-self-end text-3xl text-gray-300 mb-2">
+                          <div className="justify-self-end my-2">
                             <button
                               className="mr-2"
                               onClick={() => {
@@ -109,7 +110,12 @@ export default function Home(props: Props) {
                                 toggleOpen(post.fields.slug);
                               }}
                             >
-                              &#8211;
+                              <Image
+                                alt="Collapse text"
+                                src="/collapse.png"
+                                width={24}
+                                height={24}
+                              />
                             </button>
                             <button
                               onClick={async () => {
@@ -123,7 +129,12 @@ export default function Home(props: Props) {
                                 );
                               }}
                             >
-                              &#8599;
+                              <Image
+                                alt="Open text in new window"
+                                src="/open_in_new_window.png"
+                                width={24}
+                                height={24}
+                              />
                             </button>
                           </div>
                           <h2 className="text-left">{post.fields.title}</h2>
