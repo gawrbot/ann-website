@@ -80,7 +80,7 @@ export default function Home(props: Props) {
             );
             return (
               <div
-                className="grid grid-cols-3 place-items-start gap-x-3 px-2 lg:gap-x-10 lg:px-6 justify-items-stretch"
+                className="grid grid-cols-3 place-items-start gap-x-3 px-2 justify-items-stretch lg:gap-x-10 lg:px-6"
                 key={postGroup[0]?.fields.idTag}
               >
                 {postGroup.map((post) => {
