@@ -97,9 +97,41 @@ export default function Home(props: Props) {
                           : 'col-start-3'
                       }
                     >
-                      {isOpen[post.fields.slug as keyof typeof isOpen] ===
+                      {isOpen[post.fields.slug as keyof typeof isOpen] !==
                       true ? (
-                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left transform transition-transform scale-100 duration-700">
+                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left aspect-square transform -translate-y-1/3 transition-transform scale-10 overflow-hidden">
+                          <button
+                            onClick={() => {
+                              toggleOpen(post.fields.slug);
+                            }}
+                            onKeyDown={() => {
+                              toggleOpen(post.fields.slug);
+                            }}
+                          >
+                            <div className="justify-self-end my-2">
+                              <div className="mr-2">
+                                <Image
+                                  alt="Collapse text"
+                                  src="/collapse.png"
+                                  width={24}
+                                  height={24}
+                                />
+                              </div>
+                              <div>
+                                <Image
+                                  alt="Open text in new window"
+                                  src="/open_in_new_window.png"
+                                  width={24}
+                                  height={24}
+                                />
+                              </div>
+                              <h2>{post.fields.title}</h2>
+                              {documentToReactComponents(post.fields.richText)}
+                            </div>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="grid justify-items-start bg-white p-2 pt-0 text-left transform transition-transform scale-100">
                           <div className="justify-self-end my-2">
                             <button
                               className="mr-2"
@@ -137,22 +169,8 @@ export default function Home(props: Props) {
                               />
                             </button>
                           </div>
-                          <h2 className="text-left">{post.fields.title}</h2>
+                          <h2>{post.fields.title}</h2>
                           {documentToReactComponents(post.fields.richText)}
-                        </div>
-                      ) : (
-                        <div className="bg-white p-2 pt-0 text-left aspect-square transform transition-transform duration-700 scale-10 overflow-hidden">
-                          <button
-                            onClick={() => {
-                              toggleOpen(post.fields.slug);
-                            }}
-                            onKeyDown={() => {
-                              toggleOpen(post.fields.slug);
-                            }}
-                          >
-                            <h2 className="text-left">{post.fields.title}</h2>
-                            {documentToReactComponents(post.fields.richText)}
-                          </button>
                         </div>
                       )}
                     </div>
