@@ -17,39 +17,48 @@ export default function Browse(props: Props) {
     );
   }
   return (
-    <>
+    <div>
       <Head>
         <title>Browse</title>
         <meta name="description" content="Browse Ann's texts" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1 className="font-bold text-center mb-5">Browse through the texts</h1>
-      <div className="flex flex-col items-center">
-        <div className="">
-          {props.posts.map((postGroup) => {
-            postGroup.sort((a, b) =>
-              a.fields.languageTag > b.fields.languageTag ? 1 : -1,
-            );
-            return (
-              <ul className="list-disc" key="0">
-                {postGroup.map((post: Post) => {
-                  return (
-                    <li key={post.fields.slug} lang={post.fields.languageTag}>
-                      <Link href={`${server}/text/${post.fields.slug}`}>
-                        <h2 className="text-black font-normal hover:text-blue-600">
-                          {post.fields.title}
-                        </h2>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            );
-          })}
+      <div className="grid w-[100-vh}">
+        <div className="bg-white w-fit h-fit px-10 py-5 justify-items-center mt-40 mr-0 mb-5 lg:h-auto">
+          <h1 className="font-bold text-center mb-5">
+            Browse through the texts
+          </h1>
+          <div className="flex flex-col items-center">
+            <div className="">
+              {props.posts.map((postGroup) => {
+                postGroup.sort((a, b) =>
+                  a.fields.languageTag > b.fields.languageTag ? 1 : -1,
+                );
+                return (
+                  <ul className="list-disc" key="0">
+                    {postGroup.map((post: Post) => {
+                      return (
+                        <li
+                          key={post.fields.slug}
+                          lang={post.fields.languageTag}
+                        >
+                          <Link href={`${server}/text/${post.fields.slug}`}>
+                            <h2 className="text-black font-normal hover:text-blue-600">
+                              {post.fields.title}
+                            </h2>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

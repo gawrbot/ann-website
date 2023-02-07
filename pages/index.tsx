@@ -66,7 +66,7 @@ export default function Home(props: Props) {
     );
   } else {
     return (
-      <div className="flex h-full">
+      <div>
         <Head>
           <title>Exophony</title>
           <meta name="description" content="Exophony" />
@@ -74,14 +74,14 @@ export default function Home(props: Props) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div className="grid w-screen mt-12 gap-y-16 justify-items-stretch">
+        <div className="grid h-screen lg:h-auto gap-y-12 justify-items-stretch lg:mt-12">
           {props.posts.map((postGroup) => {
             postGroup.sort((a, b) =>
               a.fields.languageTag > b.fields.languageTag ? 1 : -1,
             );
             return (
               <div
-                className="grid grid-cols-3 place-items-start gap-x-3 px-2 justify-items-stretch lg:gap-x-10 lg:px-6"
+                className="grid grid-cols-3 place-items-start gap-x-2 px-2 justify-items-stretch lg:gap-x-10 lg:px-6"
                 key={postGroup[0]?.fields.idTag}
               >
                 {postGroup.map((post) => {

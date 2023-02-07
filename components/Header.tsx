@@ -1,14 +1,22 @@
 import Link from 'next/link';
 import { useState } from 'react';
+import useScrollDirection from '../utils/useScrollDirection';
 import Anchor from './Anchor';
 
 export default function Header() {
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  // states for Hamburger menu in the top right corner
+  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
+  // custom hook to listen to scroll event and make header (dis)appear depending on direction
+  const scrollDirection = useScrollDirection();
 
   return (
-    <div className="flex fixed w-full items-center justify-between px-3 pt-3 h-28">
-      <div className="text-xl">
-        <Link href="/">
+    <div
+      className={`flex fixed ${
+        scrollDirection === 'down' ? '-top-16 lg:-top-28' : 'top-0'
+      } w-full items-center justify-between px-3 pt-3 h-16 lg:h-28 transition-all duration-500 z-10`}
+    >
+      <div>
+        <Link href="/" className="hidden lg:inline">
           <h1 lang="de">Exophonieprojekt</h1>
           <h1 lang="en">Exophony Project</h1>
           <h1 lang="ja">エクソフォニー • プロジェクト</h1>
@@ -19,8 +27,8 @@ export default function Header() {
           {/* Hamburger-Button zum Öffnen */}
           <button
             className="space-y-2"
-            onClick={() => setIsNavOpen((prev) => !prev)}
-            onKeyDown={() => setIsNavOpen((prev) => !prev)}
+            onClick={() => setIsHamburgerOpen((prev) => !prev)}
+            onKeyDown={() => setIsHamburgerOpen((prev) => !prev)}
           >
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
@@ -29,7 +37,7 @@ export default function Header() {
           {/* Nav-Menü offen/nicht offen */}
           <div
             className={
-              isNavOpen
+              isHamburgerOpen
                 ? 'flex flex-col block absolute w-screen h-screen top-0 left-0 bg-white z-10 justify-evenly items-center'
                 : 'hidden'
             }
@@ -37,8 +45,8 @@ export default function Header() {
             {/* Kreuz-Button zum Schließen */}
             <button
               className="absolute top-0 right-0 px-8 py-8"
-              onClick={() => setIsNavOpen(false)}
-              onKeyDown={() => setIsNavOpen(false)}
+              onClick={() => setIsHamburgerOpen(false)}
+              onKeyDown={() => setIsHamburgerOpen(false)}
             >
               <svg
                 className="h-8 w-8 text-gray-600"
@@ -54,13 +62,18 @@ export default function Header() {
               </svg>
             </button>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
-              <li className="border-b border-gray-400 my-8 uppercase">
+              <li className="inline lg:hidden text-center">
+                <h1 lang="de">Exophonieprojekt</h1>
+                <h1 lang="en">Exophony Project</h1>
+                <h1 lang="ja">エクソフォニー • プロジェクト</h1>
+              </li>
+              <li className="border-b border-gray-400 lg:my-8 uppercase">
                 <Anchor href="/browse">Browse</Anchor>
               </li>
-              <li className="border-b border-gray-400 my-8 uppercase">
+              <li className="border-b border-gray-400 lg:my-8 uppercase">
                 <Anchor href="/search">Search</Anchor>
               </li>
-              <li className="border-b border-gray-400 my-8 uppercase">
+              <li className="border-b border-gray-400 lg:my-8 uppercase">
                 <Anchor href="/impressum">Impressum</Anchor>
               </li>
             </ul>
