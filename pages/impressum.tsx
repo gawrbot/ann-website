@@ -31,15 +31,17 @@ export default function Impressum(props: Props) {
     );
   }
   return (
-    <div>
-      <h1>Impressum</h1>
-      {props.impressum.map((impressum: ImpressumType) => {
-        return (
-          <div key="impressum">
-            {documentToReactComponents(impressum.fields.mainText)}
-          </div>
-        );
-      })}
+    <div className="h-[80vh]">
+      <div className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto w-2/3 lg:w-1/2">
+        <h1>Impressum</h1>
+        {props.impressum.map((impressum: ImpressumType) => {
+          return (
+            <div key="impressum">
+              {documentToReactComponents(impressum.fields.mainText)}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

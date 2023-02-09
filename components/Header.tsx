@@ -12,8 +12,8 @@ export default function Header() {
   return (
     <div
       className={`flex fixed ${
-        scrollDirection === 'down' ? '-top-16 lg:-top-28' : 'top-0'
-      } w-full items-center justify-between px-3 pt-3 h-16 lg:h-28 transition-all duration-500 z-10`}
+        scrollDirection === 'down' ? '-top-8 lg:-top-28' : 'top-0'
+      } w-full items-center justify-between px-3 lg:pt-3 h-8 lg:h-28 transition-all duration-500 z-10`}
     >
       <div>
         <Link href="/" className="hidden lg:inline">
@@ -31,8 +31,8 @@ export default function Header() {
             onKeyDown={() => setIsHamburgerOpen((prev) => !prev)}
           >
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
-            <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
-            <span className="block h-0.5 w-8 animate-pulse bg-gray-600" />
+            <span className="lg:block lg:h-0.5 lg:w-8 lg:animate-pulse lg:bg-gray-600" />
+            <span className="lg:block lg:h-0.5 lg:w-8 lg:animate-pulse lg:bg-gray-600" />
           </button>
           {/* Nav-Menü offen/nicht offen */}
           <div
@@ -63,17 +63,19 @@ export default function Header() {
             </button>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
               <li className="inline lg:hidden text-center">
-                <h1 lang="de">Exophonieprojekt</h1>
-                <h1 lang="en">Exophony Project</h1>
-                <h1 lang="ja">エクソフォニー • プロジェクト</h1>
+                <Anchor href="/">
+                  <h1 lang="de">Exophonieprojekt</h1>
+                  <h1 lang="en">Exophony Project</h1>
+                  <h1 lang="ja">エクソフォニー • プロジェクト</h1>
+                </Anchor>
               </li>
-              <li className="border-b border-gray-400 lg:my-8 uppercase">
+              <li className="border-b border-gray-400 hover:text-blue-600 lg:my-8 uppercase">
                 <Anchor href="/browse">Browse</Anchor>
               </li>
-              <li className="border-b border-gray-400 lg:my-8 uppercase">
+              <li className="border-b border-gray-400 hover:text-blue-600 lg:my-8 uppercase">
                 <Anchor href="/search">Search</Anchor>
               </li>
-              <li className="border-b border-gray-400 lg:my-8 uppercase">
+              <li className="border-b border-gray-400 hover:text-blue-600 lg:my-8 uppercase">
                 <Anchor href="/impressum">Impressum</Anchor>
               </li>
             </ul>

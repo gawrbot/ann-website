@@ -14,8 +14,9 @@ export default function Search(props: any) {
   });
 
   return (
-    <>
+    <div className="w-[80vh] absolute right-1/2 -top-96 lg:h-[80vh] lg:mx-40 lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <form
+        className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto w-fit lg:w-1/2"
         onSubmit={(event) => {
           event.preventDefault();
         }}
@@ -34,22 +35,29 @@ export default function Search(props: any) {
           className="m-3 border-2 bg-gray-200 p-1"
         />
       </form>
-      <ul>
-        {results
-          ? results.map((result) => {
-              console.log('result', result);
-              return (
-                <Link
-                  href={`${server}/text/${result.fields.slug}`}
-                  key={result.fields.title}
-                >
-                  <li>{result.fields.title}</li>
-                </Link>
-              );
-            })
-          : null}
-      </ul>
-    </>
+      <div
+        className={
+          results &&
+          'bg-white px-10 py-5 justify-items-center mr-0 mb-10 lg:mx-auto h-auto w-2/3 lg:w-1/2'
+        }
+      >
+        <ul>
+          {results
+            ? results.map((result) => {
+                console.log('result', result);
+                return (
+                  <Link
+                    href={`${server}/text/${result.fields.slug}`}
+                    key={result.fields.title}
+                  >
+                    <li>{result.fields.title}</li>
+                  </Link>
+                );
+              })
+            : null}
+        </ul>
+      </div>
+    </div>
   );
 }
 

@@ -23,13 +23,13 @@ export default function Text(props: Props) {
     );
   }
   return (
-    <div className="lg:mx-40">
+    <div className="w-[80vh] absolute right-2/3 -top-96 lg:mx-40 lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <p className="mb-5 lg:mb-8">
         <Link href="/" scroll={false}>
           <span className="font-bold underline">Go Home</span>
         </Link>
       </p>
-      <div className="bg-white px-2 py-1">
+      <div className="bg-white px-2 py-1 mb-5 lg:my-auto">
         <div
           lang={props.post.fields.languageTag}
           className="bg-white p-2 hover:shadow-xl "
