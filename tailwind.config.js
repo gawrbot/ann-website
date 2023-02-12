@@ -14,5 +14,4 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@vivgui/tailwindcss-hyphens')],
 };

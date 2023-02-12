@@ -10,6 +10,6 @@
     @apply text-lg font-bold mb-2;
   }
   p {
-    @apply mt-3 mb-2 break-words hyphens-auto;
+    @apply mt-3 mb-2 break-words;
   }
 }

@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    BLOG_URL: process.env.BLOG_URL,
-    CONTENT_API_KEY: process.env.CONTENT_API_KEY,
+    SPACE_ID: process.env.SPACE_ID,
+    ACCESS_TOKEN: process.env.ACCESS_TOKEN,
   },
 };
 
