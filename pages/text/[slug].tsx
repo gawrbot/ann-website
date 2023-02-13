@@ -1,4 +1,5 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import Head from 'next/head';
 import Link from 'next/link';
 import { Post } from '../';
 
@@ -24,6 +25,12 @@ export default function Text(props: Props) {
   }
   return (
     <div className="w-[80vh] absolute right-2/3 -top-96 lg:mx-40 lg:w-auto lg:relative lg:right-auto lg:top-auto">
+      <Head>
+          <title>{props.post.fields.title}</title>
+          <meta name="description" content="Exophony - Single Text Page" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
       <p className="mb-5 lg:mb-8">
         <Link href="/" scroll={false}>
           <span className="font-bold underline">Go Home</span>

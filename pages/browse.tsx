@@ -19,8 +19,8 @@ export default function Browse(props: Props) {
   return (
     <div className="w-[80vh] absolute right-1/2 -top-96 lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <Head>
-        <title>Browse</title>
-        <meta name="description" content="Browse Ann's texts" />
+        <title>Browse the text titles</title>
+        <meta name="description" content="Exophony - Browse through the titles" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

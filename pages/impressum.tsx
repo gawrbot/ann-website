@@ -1,4 +1,5 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import Head from 'next/head';
 
 type ImpressumType = {
   [index: string]: any;
@@ -31,7 +32,13 @@ export default function Impressum(props: Props) {
     );
   }
   return (
-    <div className="h-[80vh]">
+    <div className="h-[80vh] lg:h-screen">
+      <Head>
+          <title>Impressum</title>
+          <meta name="description" content="Exophony - Impressum" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
       <div className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto w-2/3 lg:w-1/2">
         <h1>Impressum</h1>
         {props.impressum.map((impressum: ImpressumType) => {

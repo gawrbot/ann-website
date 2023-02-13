@@ -68,12 +68,11 @@ export default function Home(props: Props) {
     return (
       <div>
         <Head>
-          <title>Exophony</title>
-          <meta name="description" content="Exophony" />
+          <title>Exophony Project</title>
+          <meta name="description" content="Exophony - Home" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-
         <div className="grid h-[85vh] lg:h-auto gap-y-12 justify-items-stretch lg:mt-12">
           {props.posts.map((postGroup) => {
             postGroup.sort((a, b) =>

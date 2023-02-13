@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Link from 'next/link';
 import useSearch from '../utils/useSearch';
 import { getPosts, server } from './';
@@ -15,6 +16,12 @@ export default function Search(props: any) {
 
   return (
     <div className="w-[80vh] absolute right-1/2 -top-96 lg:h-[80vh] lg:mx-40 lg:w-auto lg:relative lg:right-auto lg:top-auto">
+      <Head>
+        <title>Full Text Search</title>
+        <meta name="description" content="Exophony - Full Text Search" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <form
         className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto w-fit lg:w-1/2"
         onSubmit={(event) => {
