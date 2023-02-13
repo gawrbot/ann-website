@@ -1,6 +1,10 @@
-# Exophony: Dreisprachiger Blog
+# Exophony Project
 
-Mein aktuelles Projekt ist für Schriftstellerni Ann Cotten. Ein Blog, der mich vor die interessante Aufgabe stellt, eine Content Management Plattform mit einem selbst gestalteten Frontend zu verbinden.
+# Exophonieprojekt
+
+# エクソフォニー • プロジェクト
+
+Mein aktuelles Projekt ist für Schriftstellerni Ann Cotten. Ein Blog, bei dem ich ein Contentful CMS mit einem selbst gebauten Frontend zu verbinden.
 
 ## Die Beiträge/Posts
 

@@ -17,15 +17,18 @@ export default function Browse(props: Props) {
     );
   }
   return (
-    <div className="w-[80vh] absolute right-1/2 -top-96 lg:w-auto lg:relative lg:right-auto lg:top-auto">
+    <div className="w-[80vh] absolute overflow-auto right-1/2 -top-96 lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <Head>
         <title>Browse the text titles</title>
-        <meta name="description" content="Exophony - Browse through the titles" />
+        <meta
+          name="description"
+          content="Exophony - Browse through the titles"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <div className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto w-2/3 lg:w-1/2">
+        <div className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 h-auto w-2/3 lg:w-1/2 lg:mx-auto lg:mt-16">
           <h1>Browse through the texts</h1>
           <div className="flex flex-col mt-5">
             <div>

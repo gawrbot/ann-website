@@ -73,7 +73,7 @@ export default function Home(props: Props) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="grid h-[85vh] lg:h-auto gap-y-12 justify-items-stretch lg:mt-12">
+        <div className="grid h-[85vh] overflow-auto gap-y-12 justify-items-stretch lg:mt-12 lg:h-auto">
           {props.posts.map((postGroup) => {
             postGroup.sort((a, b) =>
               a.fields.languageTag > b.fields.languageTag ? 1 : -1,
