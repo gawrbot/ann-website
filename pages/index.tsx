@@ -5,6 +5,9 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { scrollContext } from '../components/ScrollContext';
 
+// Bilder und Links anzeigen:
+// https://www.contentful.com/blog/rendering-linked-assets-entries-in-contentful/
+
 const dev = process.env.NODE_ENV !== 'production';
 
 export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
