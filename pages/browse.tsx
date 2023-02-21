@@ -7,8 +7,8 @@ export default function Browse(props: Props) {
     return (
       <>
         <p>
-          <Link href="/">
-            <span className="underline">Go back</span>
+          <Link href="/" className="hover:font-bold">
+            <span className="underline">Go home</span>
           </Link>
         </p>
         <h1>Something went wrong 👀</h1>
@@ -17,9 +17,9 @@ export default function Browse(props: Props) {
     );
   }
   return (
-    <div className="w-[80vh] absolute overflow-auto right-1/2 -top-96 lg:w-auto lg:relative lg:right-auto lg:top-auto">
+    <div className="w-[80vh] absolute overflow-auto right-1/2 -top-96 lg:w-auto lg:h-screen lg:relative lg:right-auto lg:top-auto">
       <Head>
-        <title>Browse the text titles</title>
+        <title>Text Titles</title>
         <meta
           name="description"
           content="Exophony - Browse through the titles"
@@ -29,27 +29,26 @@ export default function Browse(props: Props) {
       </Head>
       <div>
         <div className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 h-auto w-2/3 lg:w-1/2 lg:mx-auto lg:mt-16">
-          <h1>Browse through the texts</h1>
-          <div className="flex flex-col mt-5">
+          <div className="flex flex-col">
             <div>
               {props.posts.map((postGroup) => {
                 postGroup.sort((a, b) =>
                   a.fields.languageTag > b.fields.languageTag ? 1 : -1,
                 );
                 return (
-                  <ul className="list-disc" key="0">
+                  <ul className="list-disc" key="title list">
                     {postGroup.map((post: Post) => {
                       return (
-                        <li
+                        <Link
                           key={post.fields.slug}
-                          lang={post.fields.languageTag}
+                          href={`${server}/text/${post.fields.slug}`}
                         >
-                          <Link href={`${server}/text/${post.fields.slug}`}>
-                            <h2 className="text-black font-normal hover:text-blue-600">
+                          <li lang={post.fields.languageTag}>
+                            <h2 className="text-black font-normal hover:font-bold">
                               {post.fields.title}
                             </h2>
-                          </Link>
-                        </li>
+                          </li>
+                        </Link>
                       );
                     })}
                   </ul>

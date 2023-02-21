@@ -10,7 +10,9 @@ import { scrollContext } from '../components/ScrollContext';
 
 const dev = process.env.NODE_ENV !== 'production';
 
-export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
+export const server = dev
+  ? 'http://localhost:3000'
+  : 'https://n-co.vercel.app' || 'https://lililil.fly.dev';
 
 export type Post = {
   [index: string]: any;
@@ -145,6 +147,7 @@ export default function Home(props: Props) {
                               }}
                             >
                               <Image
+                                className="hover:bg-gray-200 rounded-sm p-0.5"
                                 alt="Collapse text"
                                 src="/collapse.png"
                                 width={24}
@@ -164,6 +167,7 @@ export default function Home(props: Props) {
                               }}
                             >
                               <Image
+                                className="hover:bg-gray-200 rounded-sm p-0.5"
                                 alt="Open text in new window"
                                 src="/open_in_new_window.png"
                                 width={24}

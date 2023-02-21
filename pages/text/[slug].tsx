@@ -14,7 +14,7 @@ export default function Text(props: Props) {
     return (
       <div className="bg-white">
         <p>
-          <Link href="/">
+          <Link href="/" className="hover:font-bold">
             <span className="underline">Go back</span>
           </Link>
         </p>
@@ -24,7 +24,7 @@ export default function Text(props: Props) {
     );
   }
   return (
-    <div className="w-[80vh] absolute right-2/3 -top-96 lg:mx-40 lg:w-auto lg:relative lg:right-auto lg:top-auto">
+    <div className="w-[80vh] absolute right-2/3 -top-96 lg:mx-40 lg:h-screen lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <Head>
         <title>{props.post.fields.title}</title>
         <meta name="description" content="Exophony - Single Text Page" />
@@ -32,9 +32,9 @@ export default function Text(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="overflow-auto">
-        <p className="mb-5 lg:mb-8">
-          <Link href="/" scroll={false}>
-            <span className="font-bold underline">Go Home</span>
+        <p className="lg:mt-5 mb-8 lg:mb-8">
+          <Link href="/" scroll={false} className="hover:font-bold">
+            <span className="underline">Go Home</span>
           </Link>
         </p>
         <div className="bg-white px-2 py-1 mb-5 lg:my-auto">

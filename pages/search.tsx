@@ -56,6 +56,7 @@ export default function Search(props: any) {
                   <Link
                     href={`${server}/text/${result.fields.slug}`}
                     key={result.fields.title}
+                    className="hover:font-bold"
                   >
                     <li>{result.fields.title}</li>
                   </Link>

@@ -16,7 +16,7 @@ export default function Header() {
       } w-full items-center justify-between px-3 lg:pt-3 h-8 lg:h-28 transition-all duration-500 z-10`}
     >
       <div>
-        <Link href="/" className="hidden lg:inline">
+        <Link href="/" className="hidden lg:inline hover:animate-pulse">
           <h1 lang="de">Exophonieprojekt</h1>
           <h1 lang="en">Exophony Project</h1>
           <h1 lang="ja">エクソフォニー • プロジェクト</h1>
@@ -63,19 +63,19 @@ export default function Header() {
             </button>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
               <li className="inline lg:hidden text-center">
-                <Anchor href="/">
+                <Anchor href="/" className="hover:animate-pulse">
                   <h1 lang="de">Exophonieprojekt</h1>
                   <h1 lang="en">Exophony Project</h1>
                   <h1 lang="ja">エクソフォニー • プロジェクト</h1>
                 </Anchor>
               </li>
-              <li className="border-b border-gray-400 hover:text-blue-600 lg:my-8 uppercase">
+              <li className="border-b border-gray-400 hover:font-bold lg:my-8 uppercase">
                 <Anchor href="/browse">Browse</Anchor>
               </li>
-              <li className="border-b border-gray-400 hover:text-blue-600 lg:my-8 uppercase">
+              <li className="border-b border-gray-400 hover:font-bold lg:my-8 uppercase">
                 <Anchor href="/search">Search</Anchor>
               </li>
-              <li className="border-b border-gray-400 hover:text-blue-600 lg:my-8 uppercase">
+              <li className="border-b border-gray-400 hover:font-bold lg:my-8 uppercase">
                 <Anchor href="/impressum">Impressum</Anchor>
               </li>
             </ul>
