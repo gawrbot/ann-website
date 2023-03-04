@@ -1,6 +1,8 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { scrollContext } from '../components/ScrollContext';
@@ -9,6 +11,7 @@ import { scrollContext } from '../components/ScrollContext';
 // https://www.contentful.com/blog/rendering-linked-assets-entries-in-contentful/
 
 const dev = process.env.NODE_ENV !== 'production';
+const contentful = require('contentful');
 
 export const server = dev ? 'http://localhost:3000' : 'https://n-co.vercel.app';
 //  || 'https://lililil.fly.dev';
@@ -28,15 +31,30 @@ export type Props =
     }
   | { error: string };
 
-export async function getPosts() {
-  const res = await fetch(
-    `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}&content_type=post`,
-  ).then((resp) => resp.json());
+const renderOptions = {
+  renderNode: {
+    [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+      if (node.data.target.sys.contentType.sys.id === 'Link') {
+        return (
+          <Link href={`/${node.data.target.fields.slug}`}>
+            {node.data.target.fields.title}
+          </Link>
+        );
+      }
+    },
 
-  const posts = res.items;
-
-  return posts;
-}
+    [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      return (
+        <Image
+          src={`https://${node.data.target.fields.file.url}`}
+          height="20"
+          width="20"
+          alt={node.data.target.fields.description}
+        />
+      );
+    },
+  },
+};
 
 export default function Home(props: Props) {
   const { scrollRef } = useContext(scrollContext);
@@ -129,7 +147,10 @@ export default function Home(props: Props) {
                                 />
                               </div>
                               <h2>{post.fields.title}</h2>
-                              {documentToReactComponents(post.fields.richText)}
+                              {documentToReactComponents(
+                                post.fields.richText,
+                                renderOptions,
+                              )}
                             </div>
                           </button>
                         </div>
@@ -175,7 +196,10 @@ export default function Home(props: Props) {
                             </button>
                           </div>
                           <h2>{post.fields.title}</h2>
-                          {documentToReactComponents(post.fields.richText)}
+                          {documentToReactComponents(
+                            post.fields.richText,
+                            renderOptions,
+                          )}
                         </div>
                       )}
                     </div>
@@ -191,7 +215,17 @@ export default function Home(props: Props) {
 }
 
 export async function getServerSideProps() {
-  const fetchedPosts = await getPosts();
+  const client = await contentful.createClient({
+    space: process.env.SPACE_ID,
+    accessToken: process.env.ACCESS_TOKEN,
+  });
+
+  const fetchedPosts = await client
+    .getEntries({
+      content_type: 'post',
+    })
+    .then((response: any) => response.items)
+    .catch(console.error);
 
   if (typeof fetchedPosts === 'undefined') {
     return {

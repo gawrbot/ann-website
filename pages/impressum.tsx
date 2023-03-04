@@ -1,5 +1,8 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 
 type ImpressumType = {
   [index: string]: any;
@@ -11,16 +14,32 @@ type Props =
       impressum: ImpressumType[];
     }
   | { error: string };
+const contentful = require('contentful');
 
-async function getImpressum() {
-  const res = await fetch(
-    `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}&content_type=impressum`,
-  ).then((resp) => resp.json());
+const renderOptions = {
+  renderNode: {
+    [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+      if (node.data.target.sys.contentType.sys.id === 'Link') {
+        return (
+          <Link href={`/${node.data.target.fields.slug}`}>
+            {node.data.target.fields.title}
+          </Link>
+        );
+      }
+    },
 
-  const impressum = res.items;
-
-  return impressum;
-}
+    [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      return (
+        <Image
+          src={`https://${node.data.target.fields.file.url}`}
+          height={node.data.target.fields.file.details.image.height}
+          width={node.data.target.fields.file.details.image.width}
+          alt={node.data.target.fields.description}
+        />
+      );
+    },
+  },
+};
 
 export default function Impressum(props: Props) {
   if ('error' in props) {
@@ -44,7 +63,10 @@ export default function Impressum(props: Props) {
         {props.impressum.map((impressum: ImpressumType) => {
           return (
             <div key="impressum">
-              {documentToReactComponents(impressum.fields.mainText)}
+              {documentToReactComponents(
+                impressum.fields.mainText,
+                renderOptions,
+              )}
             </div>
           );
         })}
@@ -54,7 +76,17 @@ export default function Impressum(props: Props) {
 }
 
 export async function getServerSideProps() {
-  const impressum = await getImpressum();
+  const client = await contentful.createClient({
+    space: process.env.SPACE_ID,
+    accessToken: process.env.ACCESS_TOKEN,
+  });
+
+  const impressum = await client
+    .getEntries({
+      content_type: 'impressum',
+    })
+    .then((response: any) => response.items)
+    .catch(console.error);
 
   if (typeof impressum === 'undefined') {
     return {

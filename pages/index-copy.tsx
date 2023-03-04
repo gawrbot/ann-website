@@ -12,7 +12,7 @@ const renderOptions = {
   renderNode: {
     [INLINES.EMBEDDED_ENTRY]: (node: any, children: any) => {
       // target the contentType of the EMBEDDED_ENTRY to display as you need
-      if (node.data.target.sys.contentType.sys.id === 'post') {
+      if (node.data.target.sys.contentType.sys.id === 'Link') {
         return (
           <Link href={`/${node.data.target.fields.slug}`}>
             {node.data.target.fields.title}
@@ -35,10 +35,19 @@ const renderOptions = {
   },
 };
 
-export default function BlogPost(props: any) {
-  console.log(props);
+export default function Post(props: any) {
+  console.log('copy-props', props.posts[0].fields);
   return (
-    <>{documentToReactComponents(props.posts.fields.body, renderOptions)}</>
+    <div>
+      {props.posts.map((post: any) => {
+        return (
+          <div key={post.fields.slug}>
+            <h2>{post.fields.title}</h2>
+            {documentToReactComponents(post.fields.richText, renderOptions)}
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
@@ -47,14 +56,20 @@ export async function getServerSideProps() {
     space: process.env.SPACE_ID as string,
     accessToken: process.env.ACCESS_TOKEN as string,
   });
-
   const posts = await client
     .getEntries({
       content_type: 'post',
     })
-    .then((response: any) => console.log(response.items))
+    .then((response: any) => response.items)
     .catch(console.error);
 
+  if (typeof posts === 'undefined') {
+    return {
+      props: {
+        error: 'Fetching the texts from the CMS seems to have failed',
+      },
+    };
+  }
   return {
     props: { posts },
   };
