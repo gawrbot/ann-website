@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import useSearch from '../utils/useSearch';
-import { getPosts, server } from './';
+import { server } from './';
+
+const contentful = require('contentful');
 
 export default function Search(props: any) {
   const { results, searchValue, setSearchValue } = useSearch<any>({
@@ -70,12 +72,22 @@ export default function Search(props: any) {
 }
 
 export async function getServerSideProps() {
-  const posts = await getPosts();
+  const client = await contentful.createClient({
+    space: process.env.SPACE_ID,
+    accessToken: process.env.ACCESS_TOKEN,
+  });
+
+  const posts = await client
+    .getEntries({
+      content_type: 'post',
+    })
+    .then((response: any) => response.items)
+    .catch(console.error);
 
   if (typeof posts === 'undefined') {
     return {
       props: {
-        error: 'Nothing to see here',
+        error: 'Fetching the texts from the CMS seems to have failed',
       },
     };
   }
