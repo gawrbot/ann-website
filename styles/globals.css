@@ -12,4 +12,10 @@
   p {
     @apply mt-3 mb-2 break-words;
   }
+  Link {
+    @apply hover:font-bold;
+  }
+  Image {
+    @apply inline;
+  }
 }

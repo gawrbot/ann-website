@@ -6,14 +6,17 @@ const nextConfig = {
     ACCESS_TOKEN: process.env.ACCESS_TOKEN,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.ctfassets.net',
-        port: '',
-        pathname: '/**/**',
-      },
-    ],
+    images: {
+      domains: ['images.ctfassets.net'],
+    },
+    // remotePatterns: [
+    //   {
+    //     protocol: 'https',
+    //     hostname: 'images.ctfassets.net',
+    //     port: '',
+    //     pathname: '/**/**',
+    //   },
+    // ],
   },
 };
 
