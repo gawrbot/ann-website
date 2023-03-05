@@ -6,9 +6,8 @@ const nextConfig = {
     ACCESS_TOKEN: process.env.ACCESS_TOKEN,
   },
   images: {
-    images: {
-      domains: ['images.ctfassets.net'],
-    },
+    domains: ['images.ctfassets.net'],
+
     // remotePatterns: [
     //   {
     //     protocol: 'https',
