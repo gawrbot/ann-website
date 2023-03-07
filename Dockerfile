@@ -14,8 +14,9 @@ RUN yarn build
 FROM node:18-alpine AS runner
 ENV NODE_ENV production
 
-# Copy built app
+# Copy built app and config file
 COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/next.config.js ./
 
 # Copy only necessary files to run the app (minimize production app size, improve performance)
 COPY --from=builder /app/node_modules ./node_modules
