@@ -9,13 +9,19 @@
   h2 {
     @apply text-lg font-bold mb-2;
   }
+  h4 {
+    @apply mt-10;
+  }
   p {
     @apply mt-3 mb-2 break-words;
   }
-  Link {
+  a {
     @apply hover:font-bold;
   }
-  Image {
-    @apply inline;
+  img + p {
+    display: inline;
+  }
+  p + img {
+    display: inline;
   }
 }

@@ -35,18 +35,20 @@ export type Props =
 const renderOptions = {
   renderNode: {
     [INLINES.EMBEDDED_ENTRY]: (node: any) => {
-      if (node.data.target.sys.contentType.sys.id === 'Link') {
-        return (
-          <Link href={`/${node.data.target.fields.slug}`}>
-            {node.data.target.fields.title}
-          </Link>
-        );
-      }
+      return (
+        <Link
+          className="hover:font-bold"
+          href={`/${node.data.target.fields.slug}`}
+        >
+          {node.data.target.fields.title}
+        </Link>
+      );
     },
 
     [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
       return (
         <Image
+          className="inline"
           src={`https://${node.data.target.fields.file.url}`}
           height="20"
           width="20"
@@ -147,11 +149,13 @@ export default function Home(props: Props) {
                                   height={24}
                                 />
                               </div>
-                              <h2>{post.fields.title}</h2>
-                              {documentToReactComponents(
-                                post.fields.richText,
-                                renderOptions,
-                              )}
+                              <div>
+                                <h2>{post.fields.title}</h2>
+                                {documentToReactComponents(
+                                  post.fields.richText,
+                                  renderOptions,
+                                )}
+                              </div>
                             </div>
                           </button>
                         </div>
@@ -196,11 +200,13 @@ export default function Home(props: Props) {
                               />
                             </button>
                           </div>
-                          <h2>{post.fields.title}</h2>
-                          {documentToReactComponents(
-                            post.fields.richText,
-                            renderOptions,
-                          )}
+                          <div>
+                            <h2>{post.fields.title}</h2>
+                            {documentToReactComponents(
+                              post.fields.richText,
+                              renderOptions,
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>

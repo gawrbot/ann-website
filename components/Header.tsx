@@ -16,7 +16,10 @@ export default function Header() {
       } w-full items-center justify-between px-3 lg:pt-3 h-8 lg:h-28 transition-all duration-500 z-10`}
     >
       <div>
-        <Link href="/" className="hidden lg:inline hover:animate-pulse">
+        <Link
+          href="/"
+          className="hidden lg:inline hover:animate-pulse hover:font-normal"
+        >
           <h1 lang="de">Exophonieprojekt</h1>
           <h1 lang="en">Exophony Project</h1>
           <h1 lang="ja">エクソフォニー • プロジェクト</h1>
@@ -63,7 +66,10 @@ export default function Header() {
             </button>
             <ul className="flex flex-col items-center justify-between min-h-[250px]">
               <li className="inline lg:hidden text-center">
-                <Anchor href="/" className="hover:animate-pulse">
+                <Anchor
+                  href="/"
+                  className="hover:animate-pulse hover:font-normal"
+                >
                   <h1 lang="de">Exophonieprojekt</h1>
                   <h1 lang="en">Exophony Project</h1>
                   <h1 lang="ja">エクソフォニー • プロジェクト</h1>

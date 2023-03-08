@@ -14,26 +14,28 @@ type Props =
       impressum: ImpressumType[];
     }
   | { error: string };
+
 const contentful = require('contentful');
 
 const renderOptions = {
   renderNode: {
     [INLINES.EMBEDDED_ENTRY]: (node: any) => {
-      if (node.data.target.sys.contentType.sys.id === 'Link') {
-        return (
-          <Link href={`/${node.data.target.fields.slug}`}>
-            {node.data.target.fields.title}
-          </Link>
-        );
-      }
+      return (
+        <Link
+          className="hover:font-bold"
+          href={`/${node.data.target.fields.slug}`}
+        >
+          {node.data.target.fields.title}
+        </Link>
+      );
     },
-
     [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
       return (
         <Image
+          className="inline"
           src={`https://${node.data.target.fields.file.url}`}
-          height={node.data.target.fields.file.details.image.height}
-          width={node.data.target.fields.file.details.image.width}
+          height="20"
+          width="20"
           alt={node.data.target.fields.description}
         />
       );
@@ -58,7 +60,7 @@ export default function Impressum(props: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="bg-white px-10 py-5 overflow-auto justify-items-center mr-0 mb-5 h-auto w-2/3 lg:w-1/2 lg:mx-auto lg:mt-16">
+      <div className="bg-white px-10 pt-5 pb-12 overflow-auto justify-items-center mr-0 mb-5 h-auto w-2/3 lg:w-1/2 lg:mx-auto lg:mt-16">
         <h1>Impressum</h1>
         {props.impressum.map((impressum: ImpressumType) => {
           return (

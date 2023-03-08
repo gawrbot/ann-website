@@ -1,5 +1,7 @@
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Post } from '../';
 
@@ -8,6 +10,34 @@ type Props =
       post: Post;
     }
   | { error: string };
+
+const contentful = require('contentful');
+
+const renderOptions = {
+  renderNode: {
+    [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+      return (
+        <Link
+          className="hover:font-bold"
+          href={`/${node.data.target.fields.slug}`}
+        >
+          {node.data.target.fields.title}
+        </Link>
+      );
+    },
+    [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      return (
+        <Image
+          className="inline"
+          src={`https://${node.data.target.fields.file.url}`}
+          height="20"
+          width="20"
+          alt={node.data.target.fields.description}
+        />
+      );
+    },
+  },
+};
 
 export default function Text(props: Props) {
   if ('error' in props) {
@@ -43,7 +73,10 @@ export default function Text(props: Props) {
             className="bg-white p-2 hover:shadow-xl "
           >
             <h1 className="mb-2 font-bold">{props.post.fields.title}</h1>
-            {documentToReactComponents(props.post.fields.richText)}
+            {documentToReactComponents(
+              props.post.fields.richText,
+              renderOptions,
+            )}
           </div>
         </div>
       </div>
@@ -52,16 +85,19 @@ export default function Text(props: Props) {
 }
 
 export async function getServerSideProps({ params }: any) {
-  async function getPost(slug: string) {
-    const res = await fetch(
-      `https://cdn.contentful.com/spaces/${process.env.SPACE_ID}/environments/master/entries?access_token=${process.env.ACCESS_TOKEN}&content_type=post&fields.slug[in]=${slug}`,
-    ).then((resp) => resp.json());
+  const client = await contentful.createClient({
+    space: process.env.SPACE_ID,
+    accessToken: process.env.ACCESS_TOKEN,
+  });
 
-    const posts = res.items;
-
-    return posts?.[0];
-  }
-  const post = await getPost(params.slug);
+  const post = await client
+    .getEntries({
+      content_type: 'post',
+      'fields.slug': params.slug,
+    })
+    .then((response: Post) => response.items[0])
+    .catch(console.error);
+  console.log('post sdk', post);
   if (typeof post === 'undefined') {
     return {
       props: {

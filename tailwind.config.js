@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,4 +16,16 @@ module.exports = {
       },
     },
   },
+  // tut nix
+  plugins: [
+    plugin(function ({ addComponents }) {
+      addComponents({
+        '.inline-paragraph': {
+          'img + p': {
+            display: 'inline',
+          },
+        },
+      });
+    }),
+  ],
 };
