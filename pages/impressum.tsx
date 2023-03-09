@@ -22,10 +22,10 @@ const renderOptions = {
     [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
       return (
         <Image
-          className="inline"
+          className="inline mb-2"
           src={`https://${node.data.target.fields.file.url}`}
-          height="20"
-          width="20"
+          height="18"
+          width="18"
           alt={node.data.target.fields.description}
         />
       );

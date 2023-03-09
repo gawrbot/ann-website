@@ -10,13 +10,19 @@
     @apply text-lg font-bold mb-2 break-words;
   }
   h4 {
-    @apply mt-10 break-words;
+    @apply mt-10 mb-5 break-words;
+  }
+  h4:has(+ p) {
+    @apply mt-10 mb-0 break-words;
   }
   p {
     @apply mt-3 mb-2 break-words;
   }
   a {
     @apply hover:font-bold;
+  }
+  hr {
+    @apply opacity-0;
   }
   img + p {
     display: inline;
