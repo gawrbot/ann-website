@@ -6,29 +6,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { scrollContext } from '../components/ScrollContext';
-
-// Bilder und Links anzeigen:
-// https://www.contentful.com/blog/rendering-linked-assets-entries-in-contentful/
+import { Post, PropsAllPosts } from '../utils/types';
 
 const dev = process.env.NODE_ENV !== 'production';
 const contentful = require('contentful');
 
 export const server = dev ? 'http://localhost:3000' : 'https://lililil.fly.dev';
-
-export type Post = {
-  [index: string]: any;
-  title: string;
-  text: string;
-  slug: string;
-  languageTag: string;
-  idTag: string;
-};
-
-export type Props =
-  | {
-      posts: Post[][];
-    }
-  | { error: string };
 
 const renderOptions = {
   renderNode: {
@@ -46,10 +29,10 @@ const renderOptions = {
     [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
       return (
         <Image
-          className="inline"
+          className="inline mb-2"
           src={`https://${node.data.target.fields.file.url}`}
-          height="20"
-          width="20"
+          height="18"
+          width="18"
           alt={node.data.target.fields.description}
         />
       );
@@ -57,7 +40,7 @@ const renderOptions = {
   },
 };
 
-export default function Home(props: Props) {
+export default function Home(props: PropsAllPosts) {
   const { scrollRef } = useContext(scrollContext);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState({});
@@ -148,7 +131,16 @@ export default function Home(props: Props) {
                                 />
                               </div>
                               <div>
-                                <h2>{post.fields.title}</h2>
+                                <h2>
+                                  {post.fields.title && post.fields.title}
+                                </h2>
+                                <h2>
+                                  {post.fields.titleWithIcons &&
+                                    documentToReactComponents(
+                                      post.fields.titleWithIcons,
+                                      renderOptions,
+                                    )}
+                                </h2>
                                 {documentToReactComponents(
                                   post.fields.richText,
                                   renderOptions,
@@ -199,7 +191,14 @@ export default function Home(props: Props) {
                             </button>
                           </div>
                           <div>
-                            <h2>{post.fields.title}</h2>
+                            <h2>{post.fields.title && post.fields.title}</h2>
+                            <h2 className="inline">
+                              {post.fields.titleWithIcons &&
+                                documentToReactComponents(
+                                  post.fields.titleWithIcons,
+                                  renderOptions,
+                                )}
+                            </h2>
                             {documentToReactComponents(
                               post.fields.richText,
                               renderOptions,

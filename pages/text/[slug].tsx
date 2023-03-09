@@ -3,13 +3,7 @@ import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Post } from '../';
-
-type Props =
-  | {
-      post: Post;
-    }
-  | { error: string };
+import { Post, PropsSinglePost } from '../../utils/types';
 
 const contentful = require('contentful');
 
@@ -39,7 +33,7 @@ const renderOptions = {
   },
 };
 
-export default function Text(props: Props) {
+export default function Text(props: PropsSinglePost) {
   if ('error' in props) {
     return (
       <div className="bg-white">

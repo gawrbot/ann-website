@@ -3,17 +3,7 @@ import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-
-type ImpressumType = {
-  [index: string]: any;
-  mainText: string;
-};
-
-type Props =
-  | {
-      impressum: ImpressumType[];
-    }
-  | { error: string };
+import { ImpressumType, PropsImpressum } from '../utils/types';
 
 const contentful = require('contentful');
 
@@ -43,7 +33,7 @@ const renderOptions = {
   },
 };
 
-export default function Impressum(props: Props) {
+export default function Impressum(props: PropsImpressum) {
   if ('error' in props) {
     return (
       <>
@@ -87,7 +77,7 @@ export async function getServerSideProps() {
     .getEntries({
       content_type: 'impressum',
     })
-    .then((response: any) => response.items)
+    .then((response: ImpressumType) => response.items)
     .catch(console.error);
 
   if (typeof impressum === 'undefined') {

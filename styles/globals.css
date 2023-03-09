@@ -24,4 +24,7 @@
   p + img {
     display: inline;
   }
+  p:has(+ img) {
+    display: inline;
+  }
 }

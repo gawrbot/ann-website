@@ -1,10 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { Post, Props, server } from './';
+import { Post, PropsAllPosts } from '../utils/types';
+import { server } from './';
 
 const contentful = require('contentful');
 
-export default function Browse(props: Props) {
+export default function Browse(props: PropsAllPosts) {
   if ('error' in props) {
     return (
       <>
@@ -74,7 +75,7 @@ export async function getServerSideProps() {
     .getEntries({
       content_type: 'post',
     })
-    .then((response: any) => response.items)
+    .then((response: Post) => response.items)
     .catch(console.error);
 
   if (typeof fetchedPosts === 'undefined') {
