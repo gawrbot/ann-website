@@ -54,7 +54,7 @@ export default function Text(props: Props) {
     );
   }
   return (
-    <div className="w-[80vh] absolute right-2/3 -top-96 lg:mx-40 lg:h-screen lg:w-auto lg:relative lg:right-auto lg:top-auto">
+    <div className="w-[80vh] absolute right-[27rem] -top-[22rem] lg:mx-40 lg:h-screen lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <Head>
         <title>{props.post.fields.title}</title>
         <meta name="description" content="Exophony - Single Text Page" />
@@ -62,15 +62,22 @@ export default function Text(props: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="overflow-auto">
-        <p className="lg:mt-5 mb-8 lg:mb-8">
+        <p className="lg:mt-5 mb-8 ml-10">
           <Link href="/" scroll={false} className="hover:font-bold">
-            <span className="underline">Go Home</span>
+            <Image
+              className="inline mr-3"
+              src="/record.png"
+              height="20"
+              width="20"
+              alt=""
+            />
+            <span className="font-semibold">Go Home</span>
           </Link>
         </p>
-        <div className="bg-white px-2 py-1 mb-5 lg:my-auto">
+        <div className="bg-white px-10 pt-5 pb-12 overflow-auto justify-items-center mr-0 mb-5 h-auto lg:w-1/2 lg:mx-auto lg:mt-16">
           <div
             lang={props.post.fields.languageTag}
-            className="bg-white p-2 hover:shadow-xl "
+            // className="bg-white p-2 hover:shadow-xl "
           >
             <h1 className="mb-2 font-bold">{props.post.fields.title}</h1>
             {documentToReactComponents(
@@ -97,7 +104,7 @@ export async function getServerSideProps({ params }: any) {
     })
     .then((response: Post) => response.items[0])
     .catch(console.error);
-  console.log('post sdk', post);
+
   if (typeof post === 'undefined') {
     return {
       props: {

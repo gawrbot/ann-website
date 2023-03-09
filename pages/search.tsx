@@ -17,15 +17,15 @@ export default function Search(props: any) {
   });
 
   return (
-    <div className="w-[80vh] absolute right-1/2 -top-96 lg:h-[80vh] lg:mx-40 lg:w-auto lg:relative lg:right-auto lg:top-auto">
+    <div className="w-[80vh] absolute right-[27rem] -top-[20rem] lg:mx-40 lg:h-screen lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <Head>
-        <title>Full Text Search</title>
+        <title>Search</title>
         <meta name="description" content="Exophony - Full Text Search" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <form
-        className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto w-fit lg:w-1/2"
+        className="bg-white px-10 py-5 justify-items-center mr-0 mb-5 lg:mx-auto lg:mt-16 h-auto min-w-fit lg:w-1/2"
         onSubmit={(event) => {
           event.preventDefault();
         }}
@@ -47,7 +47,7 @@ export default function Search(props: any) {
       <div
         className={
           results &&
-          'bg-white px-10 py-5 justify-items-center mr-0 mb-10 lg:mx-auto h-auto w-2/3 lg:w-1/2'
+          'bg-white px-10 py-5 justify-items-center mr-0 mb-10 lg:mx-auto h-auto lg:w-1/2'
         }
       >
         <ul>

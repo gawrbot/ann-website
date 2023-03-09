@@ -4,13 +4,13 @@
 
 @layer base {
   h1 {
-    @apply text-lg lg:text-xl;
+    @apply text-lg lg:text-xl break-words;
   }
   h2 {
-    @apply text-lg font-bold mb-2;
+    @apply text-lg font-bold mb-2 break-words;
   }
   h4 {
-    @apply mt-10;
+    @apply mt-10 break-words;
   }
   p {
     @apply mt-3 mb-2 break-words;
