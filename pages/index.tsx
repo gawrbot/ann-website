@@ -132,9 +132,6 @@ export default function Home(props: PropsAllPosts) {
                               </div>
                               <div>
                                 <h2>
-                                  {post.fields.title && post.fields.title}
-                                </h2>
-                                <h2>
                                   {post.fields.titleWithIcons &&
                                     documentToReactComponents(
                                       post.fields.titleWithIcons,
@@ -191,8 +188,7 @@ export default function Home(props: PropsAllPosts) {
                             </button>
                           </div>
                           <div>
-                            <h2>{post.fields.title && post.fields.title}</h2>
-                            <h2 className="inline">
+                            <h2>
                               {post.fields.titleWithIcons &&
                                 documentToReactComponents(
                                   post.fields.titleWithIcons,

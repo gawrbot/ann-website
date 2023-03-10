@@ -55,10 +55,40 @@ export default function Impressum(props: PropsImpressum) {
         {props.impressum.map((impressum: ImpressumType) => {
           return (
             <div key="impressum">
-              {documentToReactComponents(
-                impressum.fields.mainText,
-                renderOptions,
-              )}
+              <div key="contentCredits" className="mt-6">
+                {documentToReactComponents(
+                  impressum.fields.mainText,
+                  renderOptions,
+                )}
+              </div>
+              <hr className="opacity-100" />
+              <div key="developmentCredits">
+                {documentToReactComponents(
+                  impressum.fields.development,
+                  renderOptions,
+                )}
+              </div>
+              <hr className="opacity-100" />
+              <div key="fundingInfo">
+                {documentToReactComponents(
+                  impressum.fields.funding,
+                  renderOptions,
+                )}
+              </div>
+              <hr className="opacity-100" />
+              <div key="warningIcon" className="mt-3 mb-2">
+                {documentToReactComponents(
+                  impressum.fields.warning,
+                  renderOptions,
+                )}
+              </div>
+              <hr className="opacity-100" />
+              <div key="thanksToIconCreators">
+                {documentToReactComponents(
+                  impressum.fields.thanks,
+                  renderOptions,
+                )}
+              </div>
             </div>
           );
         })}

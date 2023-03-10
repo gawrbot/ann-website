@@ -1,9 +1,39 @@
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Post, PropsAllPosts } from '../utils/types';
 import { server } from './';
 
 const contentful = require('contentful');
+
+const renderOptions = {
+  renderNode: {
+    [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+      return (
+        <Link
+          className="hover:font-bold"
+          href={`/${node.data.target.fields.slug}`}
+        >
+          {node.data.target.fields.title}
+        </Link>
+      );
+    },
+
+    [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      return (
+        <Image
+          className="inline mb-2"
+          src={`https://${node.data.target.fields.file.url}`}
+          height="18"
+          width="18"
+          alt={node.data.target.fields.description}
+        />
+      );
+    },
+  },
+};
 
 export default function Browse(props: PropsAllPosts) {
   if ('error' in props) {
@@ -22,7 +52,7 @@ export default function Browse(props: PropsAllPosts) {
   return (
     <div className="w-[80vh] absolute right-[27rem] -top-[20rem] lg:mx-40 lg:h-screen lg:w-auto lg:relative lg:right-auto lg:top-auto">
       <Head>
-        <title>Text Titles</title>
+        <title>Texts</title>
         <meta
           name="description"
           content="Exophony - Browse through the titles"
@@ -48,7 +78,11 @@ export default function Browse(props: PropsAllPosts) {
                         >
                           <li lang={post.fields.languageTag}>
                             <h2 className="text-black font-normal hover:font-bold">
-                              {post.fields.title}
+                              {post.fields.titleWithIcons &&
+                                documentToReactComponents(
+                                  post.fields.titleWithIcons,
+                                  renderOptions,
+                                )}
                             </h2>
                           </li>
                         </Link>

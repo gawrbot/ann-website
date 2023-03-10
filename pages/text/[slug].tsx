@@ -22,7 +22,7 @@ const renderOptions = {
     [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
       return (
         <Image
-          className="inline"
+          className="inline mb-2"
           src={`https://${node.data.target.fields.file.url}`}
           height="20"
           width="20"
@@ -56,8 +56,8 @@ export default function Text(props: PropsSinglePost) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="overflow-auto">
-        <p className="lg:mt-5 mb-8 ml-10">
-          <Link href="/" scroll={false} className="hover:font-bold">
+        <p className="lg:mt-12 lg:mb-4 mb-8 ml-10">
+          <Link href="/" scroll={false}>
             <Image
               className="inline mr-3"
               src="/record.png"
@@ -65,15 +65,21 @@ export default function Text(props: PropsSinglePost) {
               width="20"
               alt=""
             />
-            <span className="font-semibold">Go Home</span>
+            <span className="font-semibold hover:font-bold">Go Home</span>
           </Link>
         </p>
-        <div className="bg-white px-10 pt-5 pb-12 overflow-auto justify-items-center mr-0 mb-5 h-auto lg:w-1/2 lg:mx-auto lg:mt-16">
+        <div className="bg-white px-10 pt-5 pb-12 overflow-auto justify-items-center mr-0 mb-5 h-auto lg:mx-auto lg:mt-8">
           <div
             lang={props.post.fields.languageTag}
             // className="bg-white p-2 hover:shadow-xl "
           >
-            <h1 className="mb-2 font-bold">{props.post.fields.title}</h1>
+            <h1 className="mb-2 font-bold">
+              {props.post.fields.titleWithIcons &&
+                documentToReactComponents(
+                  props.post.fields.titleWithIcons,
+                  renderOptions,
+                )}
+            </h1>
             {documentToReactComponents(
               props.post.fields.richText,
               renderOptions,

@@ -1,9 +1,40 @@
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { BLOCKS, INLINES } from '@contentful/rich-text-types';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
+import { Post } from '../utils/types';
 import useSearch from '../utils/useSearch';
 import { server } from './';
 
 const contentful = require('contentful');
+
+const renderOptions = {
+  renderNode: {
+    [INLINES.EMBEDDED_ENTRY]: (node: any) => {
+      return (
+        <Link
+          className="hover:font-bold"
+          href={`/${node.data.target.fields.slug}`}
+        >
+          {node.data.target.fields.title}
+        </Link>
+      );
+    },
+
+    [BLOCKS.EMBEDDED_ASSET]: (node: any) => {
+      return (
+        <Image
+          className="inline mb-2"
+          src={`https://${node.data.target.fields.file.url}`}
+          height="18"
+          width="18"
+          alt={node.data.target.fields.description}
+        />
+      );
+    },
+  },
+};
 
 export default function Search(props: any) {
   const { results, searchValue, setSearchValue } = useSearch<any>({
@@ -60,7 +91,15 @@ export default function Search(props: any) {
                     key={result.fields.title}
                     className="hover:font-bold"
                   >
-                    <li>{result.fields.title}</li>
+                    <li>
+                      <h2 className="text-black font-normal hover:font-bold">
+                        {result.fields.titleWithIcons &&
+                          documentToReactComponents(
+                            result.fields.titleWithIcons,
+                            renderOptions,
+                          )}
+                      </h2>
+                    </li>
                   </Link>
                 );
               })
@@ -81,7 +120,7 @@ export async function getServerSideProps() {
     .getEntries({
       content_type: 'post',
     })
-    .then((response: any) => response.items)
+    .then((response: Post) => response.items)
     .catch(console.error);
 
   if (typeof posts === 'undefined') {

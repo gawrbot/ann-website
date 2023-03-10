@@ -6,8 +6,17 @@
   h1 {
     @apply text-lg lg:text-xl break-words;
   }
+  h1:has(+ img) {
+    @apply inline;
+  }
   h2 {
     @apply text-lg font-bold mb-2 break-words;
+  }
+  h2:has(+ img) {
+    @apply inline;
+  }
+  h2:has(> img) {
+    @apply mt-3 mb-2;
   }
   h4 {
     @apply mt-10 mb-5 break-words;
@@ -15,22 +24,28 @@
   h4:has(+ p) {
     @apply mt-10 mb-0 break-words;
   }
+  h4 + img {
+    @apply inline;
+  }
+  img + h4 {
+    @apply inline;
+  }
   p {
     @apply mt-3 mb-2 break-words;
+  }
+  img + p {
+    @apply inline mt-3;
+  }
+  p + img {
+    @apply inline;
+  }
+  p:has(+ img) {
+    @apply inline;
   }
   a {
     @apply hover:font-bold;
   }
   hr {
     @apply opacity-0;
-  }
-  img + p {
-    display: inline;
-  }
-  p + img {
-    display: inline;
-  }
-  p:has(+ img) {
-    display: inline;
   }
 }
