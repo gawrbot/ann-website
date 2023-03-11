@@ -41,7 +41,7 @@ export default function Search(props: any) {
     dataSet:
       'posts' in props ? props.posts : ({} as { [key: string]: undefined }[]),
     keys: [
-      'fields.title',
+      'fields.titleWithIcons',
       'fields.richText.content.content.value',
       'fields.slug',
     ],
@@ -78,7 +78,7 @@ export default function Search(props: any) {
       <div
         className={
           results &&
-          'bg-white px-10 py-5 justify-items-center mr-0 mb-10 lg:mx-auto h-auto lg:w-1/2'
+          'bg-white px-10 py-5 justify-items-center mr-0 mb-10 lg:mx-auto h-auto'
         }
       >
         <ul>
@@ -86,21 +86,22 @@ export default function Search(props: any) {
             ? results.map((result) => {
                 console.log('result', result);
                 return (
-                  <Link
-                    href={`${server}/text/${result.fields.slug}`}
-                    key={result.fields.title}
-                    className="hover:font-bold"
-                  >
-                    <li>
+                  <li key={result.fields.title}>
+                    <Link href={`${server}/text/${result.fields.slug}`}>
                       <h2 className="text-black font-normal hover:font-bold">
-                        {result.fields.titleWithIcons &&
-                          documentToReactComponents(
-                            result.fields.titleWithIcons,
-                            renderOptions,
-                          )}
+                        {documentToReactComponents(
+                          result.fields.titleWithIcons,
+                          renderOptions,
+                        )}
                       </h2>
-                    </li>
-                  </Link>
+                    </Link>
+                    <div>
+                      {documentToReactComponents(
+                        result.fields.richText,
+                        renderOptions,
+                      )}
+                    </div>
+                  </li>
                 );
               })
             : null}

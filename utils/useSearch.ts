@@ -6,13 +6,19 @@ interface IUseSearchProps<T> {
   keys: string[];
 }
 
-const SCORE_THRESHOLD = 0.6;
+const SCORE_THRESHOLD = 0.01;
 
 // Adapted from here: https://akashrajpurohit.com/blog/how-to-add-fuzzy-search-to-your-react-app-using-fusejs/#usesearch-hook, Thank you, if you ever read this!
 
 // useSearch-Hook für die fuseSearch-Suche
 // mit den parametern 'dataSet' für die Posts
 // und 'keys', um zu bestimmen, welche Properties der Posts durchsucht werden
+
+// Für Highlights:
+// https://gist.github.com/evenfrost/1ba123656ded32fb7a0cd4651efd4db0
+// oder
+// https://dev.to/noclat/using-fuse-js-with-react-to-build-an-advanced-search-with-highlighting-4b93
+
 export default function useSearch<T>({ dataSet, keys }: IUseSearchProps<T>) {
   const [searchValue, setSearchValue] = useState('');
 
@@ -20,7 +26,6 @@ export default function useSearch<T>({ dataSet, keys }: IUseSearchProps<T>) {
     const options = {
       includeScore: true,
       ignoreLocation: true,
-      // Enables showing matches --> see, if necessary
       includeMatches: true,
       keys,
     };
